@@ -17,7 +17,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "Georgia", ...cjk],
+        serif: ["'MLG Hyphen'", "var(--font-serif)", "Georgia", ...cjk],
         sans: ["var(--font-sans)", "system-ui", ...cjk],
       },
       maxWidth: {

@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Instrument Serif draws its hyphen with very wide sidebearings ("Add - ons").
+   Borrow a tighter hyphen for that one character only. */
+@font-face {
+  font-family: "MLG Hyphen";
+  src: local("Georgia"), local("Times New Roman"), local("Noto Serif");
+  unicode-range: U+002D;
+}
+
 :root {
   --ring: #9c5b4d;
   --nav-h: 72px;
@@ -60,7 +68,7 @@ body {
 
   /* Display sizes. Each sets --fs so Chinese can scale it to about 0.8x. */
   .display {
-    font-family: var(--font-serif), Georgia, serif;
+    font-family: "MLG Hyphen", var(--font-serif), Georgia, serif;
     font-weight: 400;
     font-size: var(--fs);
     line-height: 0.95;
@@ -176,7 +184,7 @@ html[lang="zh-Hans"] .display {
 }
 html[lang="zh-Hans"] .display .latin,
 html[lang="zh-Hans"] .latin {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: "MLG Hyphen", var(--font-serif), Georgia, serif;
   font-weight: 400;
 }
 html[lang="zh-Hans"] .anno {
