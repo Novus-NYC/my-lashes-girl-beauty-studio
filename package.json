@@ -1,5 +1,5 @@
 {
-  "name": "novus-base-template",
+  "name": "my-lash-girl-beauty-studio",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "next": "16.2.12",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
   },
   "devDependencies": {
     "@types/node": "26.6.5",

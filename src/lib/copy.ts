@@ -1,0 +1,188 @@
+// Every visible string, in English and Simplified Chinese.
+// Chinese is a first draft: have a native speaker review before launch.
+import type { Bi } from "./menu"
+
+const b = (en: string, zh: string): Bi => ({ en, zh })
+
+export const copy = {
+  nav: {
+    styles: b("Styles", "款式"),
+    menu: b("Menu", "价目"),
+    about: b("About", "关于"),
+    visit: b("Visit", "到店"),
+    book: b("Book", "预约"),
+    home: b("My Lash Girl Beauty Studio, home", "My Lash Girl Beauty Studio 首页"),
+    open: b("Open menu", "打开菜单"),
+    close: b("Close menu", "关闭菜单"),
+    language: b("Language", "语言"),
+    main: b("Main", "主导航"),
+  },
+  common: {
+    bookOnSquare: b("Book on Square", "在 Square 预约"),
+    book: b("Book", "预约"),
+    call: b("Call", "致电"),
+    instagram: b("Instagram", "Instagram"),
+    opensNew: b("(opens in a new tab)", "（在新标签页打开）"),
+    today: b("Today", "今天"),
+    byAppointment: b("By appointment", "仅限预约"),
+    mobile: b("Mobile lash service available. Ask when you book.", "提供上门睫毛服务，预约时请询问。"),
+    landmark: b(
+      "Next to Chipotle on Madison at 40th, 12th floor, Suite 1205.",
+      "麦迪逊大道与 40 街交界，Chipotle 旁边，12 楼 1205 室。",
+    ),
+    address1: b("274 Madison Avenue, Suite 1205", "274 Madison Avenue, Suite 1205"),
+    address2: b("New York, NY 10016", "New York, NY 10016"),
+    floor: b("12th floor", "12 楼"),
+    mmNote: b("Lengths in mm, inner corner to outer corner", "长度单位为毫米，由内眼角到外眼角"),
+    illustrative: b(
+      "Maps are illustrative. Yours is planned for your eye shape at the appointment.",
+      "图为示意。你的睫毛会在预约时按你的眼型来设计。",
+    ),
+  },
+  home: {
+    annotation: b("274 Madison Ave · Suite 1205 · 12th floor", "274 Madison Ave · 1205 室 · 12 楼"),
+    title: b("Lashes designed for your eye shape.", "为你的眼型设计的睫毛。"),
+    line: b(
+      "Custom lash sets by an artist with 8 years of experience, a short walk from Grand Central.",
+      "8 年经验的睫毛师为你定制，距离中央车站步行几分钟。",
+    ),
+    seeStyles: b("See styles and prices", "查看款式和价格"),
+    proof: b("4.9 on ClassPass · 100+ ratings", "ClassPass 评分 4.9 · 100+ 条评价"),
+    heroCaption: b("Finished set", "完成效果"),
+    heroMapCaption: b("Anime set · lash map", "动漫款 · 睫毛设计图"),
+    indexTitle: b("Five sets, five maps.", "五款睫毛，五张设计图。"),
+    indexLead: b(
+      "Every set is planned zone by zone. The numbers are lash lengths in millimetres.",
+      "每一款都按区域来设计。图上的数字是睫毛长度（毫米）。",
+    ),
+    indexLink: b("Compare all five styles", "比较全部五款"),
+    processTitle: b("How a set is designed.", "一套睫毛的设计过程。"),
+    processLead: b(
+      "Show her a picture of the lashes you like. The rest is planning.",
+      "带上你喜欢的睫毛照片，剩下的交给设计。",
+    ),
+    steps: [
+      {
+        word: b("Look", "观察"),
+        body: b(
+          "We study your eye shape and the look you want. Bring a photo if you have one.",
+          "先看你的眼型和想要的效果。有参考照片的话可以带来。",
+        ),
+      },
+      {
+        word: b("Map", "设计"),
+        body: b(
+          "Lengths and curl are planned zone by zone, from the inner corner out.",
+          "长度和弧度按区域规划，从内眼角一直到外眼角。",
+        ),
+      },
+      {
+        word: b("Apply", "嫁接"),
+        body: b("Lashes are applied one zone at a time, following the map.", "按照设计图，一个区域一个区域地嫁接。"),
+      },
+    ],
+    baTitle: b("Before and after.", "嫁接前后。"),
+    baBody: b(
+      "Real sets from the studio's Instagram. In each pair, the top is before and the bottom is after.",
+      "来自工作室 Instagram 的真实作品。每张图上方为嫁接前，下方为嫁接后。",
+    ),
+    baCaption1: b("Before · after", "嫁接前 · 嫁接后"),
+    baCaption2: b("Anime set · before · after", "动漫款 · 嫁接前 · 嫁接后"),
+    baLink: b("See more on Instagram", "在 Instagram 查看更多"),
+    visitTitle: b("Up on the 12th floor.", "就在 12 楼。"),
+    visitLink: b("Directions and hours", "交通和营业时间"),
+  },
+  reviews: {
+    title: b("What clients say", "顾客怎么说"),
+    count: b("100+ ratings on ClassPass", "ClassPass 上 100+ 条评价"),
+    outOf: b("out of 5", "满分 5 分"),
+    client: b("ClassPass client", "ClassPass 顾客"),
+    readMore: b("Read reviews on ClassPass", "在 ClassPass 查看评价"),
+    note: b("Reviews are shown in their original English.", "评价保留英文原文。"),
+  },
+  styles: {
+    title: b("Pick a style. Read its map.", "选一款，看它的设计图。"),
+    lead: b(
+      "Each set has its own map: how long the lashes are in each zone, from the inner corner to the outer corner.",
+      "每一款都有自己的设计图：从内眼角到外眼角，每个区域的睫毛有多长。",
+    ),
+    jump: b("Jump to a style", "跳转到款式"),
+    set: b("Full set", "全套"),
+    duration: b("Time", "时长"),
+    refill2: b("Refill, 2 weeks", "两周补睫"),
+    refill3: b("Refill, 3 weeks", "三周补睫"),
+    bookThis: b("Book this set", "预约这一款"),
+    mapOnly: b("No photo yet. The map tells the story.", "暂无照片，设计图一目了然。"),
+    captions: {
+      natural: b("Natural set", "自然款"),
+      full: b("Studio work · detail", "工作室作品 · 细节"),
+      anime: b("Anime set · before · after", "动漫款 · 嫁接前 · 嫁接后"),
+    },
+    menuLink: b("See the full menu with add-ons", "查看完整价目和加购项目"),
+  },
+  menu: {
+    title: b("Menu", "价目表"),
+    lead: b(
+      "Prices from our Square booking page. Final price is confirmed when you book.",
+      "价格来自我们的 Square 预约页面，最终价格以预约时确认为准。",
+    ),
+    lashSets: b("Lash sets", "睫毛嫁接"),
+    addOns: b("Add-ons", "加购项目"),
+    faceBody: b("Face and body", "面部与身体"),
+    service: b("Service", "项目"),
+    fullSet: b("Full set", "全套"),
+    refill2: b("2-week refill", "两周补睫"),
+    refill3: b("3-week refill", "三周补睫"),
+    price: b("Price", "价格"),
+    time: b("Time", "时长"),
+    stylesLink: b("See each style's lash map", "查看每款的设计图"),
+    endTitle: b("Found your set?", "选好了吗？"),
+  },
+  about: {
+    title: b("8 years of lash artistry.", "8 年睫毛嫁接经验。"),
+    lead: b(
+      "My Lash Girl is a small, appointment-only studio on the 12th floor of 274 Madison Avenue, a short walk from Grand Central.",
+      "My Lash Girl 是一家只接受预约的小型工作室，位于麦迪逊大道 274 号 12 楼，距离中央车站步行几分钟。",
+    ),
+    body: b(
+      "Every pair of eyes is unique, so every set is customized to match your natural shape. The goal is a soft, beautiful look that feels like you.",
+      "每个人的眼睛都不一样，所以每一套睫毛都按你本来的眼型定制，效果柔和好看，又像你自己。",
+    ),
+    quote: b("Custom lash designs for your unique eye shape.", "为你独特的眼型，定制睫毛设计。"),
+    quoteSource: b("From the studio's Instagram", "摘自工作室 Instagram"),
+    specTitle: b("The studio, at a glance", "工作室一览"),
+    facts: [
+      { k: b("Experience", "经验"), v: b("8 years of lash artistry", "8 年睫毛嫁接经验") },
+      { k: b("Approach", "理念"), v: b("Each set designed for your eye shape", "每一套都按你的眼型设计") },
+      { k: b("Ownership", "经营"), v: b("Woman-owned and Asian-owned", "女性创办，亚裔经营") },
+      { k: b("Mobile service", "上门服务"), v: b("Available. Ask when you book.", "可提供，预约时请询问。") },
+      { k: b("Location", "地点"), v: b("12th floor, 274 Madison Avenue", "麦迪逊大道 274 号 12 楼") },
+      { k: b("Booking", "预约"), v: b("By appointment, on Square", "通过 Square 预约") },
+    ],
+    chairCaption: b("After a set, in the studio", "在工作室，嫁接完成后"),
+    baCaption: b("Studio work · two angles", "工作室作品 · 两个角度"),
+    endTitle: b("Come in for your own map.", "来设计属于你的睫毛。"),
+  },
+  visit: {
+    title: b("274 Madison Avenue", "274 Madison Avenue"),
+    suite: b("Suite 1205 · 12th floor · New York, NY 10016", "1205 室 · 12 楼 · New York, NY 10016"),
+    directionsTitle: b("From Grand Central", "从中央车站出发"),
+    directions: b(
+      "From Grand Central, walk to Madison Avenue and 40th Street. We're at 274 Madison, next to Chipotle. Take the elevator to the 12th floor, Suite 1205.",
+      "从中央车站步行到麦迪逊大道与 40 街交界。我们在 274 Madison，Chipotle 旁边。乘电梯到 12 楼 1205 室。",
+    ),
+    hoursTitle: b("Hours", "营业时间"),
+    appointmentOnly: b("Appointment only.", "仅限预约。"),
+    arrive: b("Please arrive a few minutes early to settle in.", "请提前几分钟到达，稍作休息。"),
+    mapTitle: b("Map showing 274 Madison Avenue, New York", "地图：纽约 274 Madison Avenue"),
+    openMaps: b("Open in Google Maps", "在 Google 地图中打开"),
+    contactTitle: b("Book, call or message", "预约、致电或私信"),
+  },
+  footer: {
+    pages: b("Pages", "页面"),
+    elsewhere: b("Elsewhere", "其他平台"),
+    studio: b("Studio", "工作室"),
+    hours: b("Open 7 days, by appointment", "每周七天营业，需预约"),
+    seeHours: b("See hours", "查看营业时间"),
+  },
+}

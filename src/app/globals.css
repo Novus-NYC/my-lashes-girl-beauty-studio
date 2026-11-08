@@ -2,11 +2,196 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  padding: 0;
-  margin: 0;
+:root {
+  --ring: #9c5b4d;
+  --nav-h: 72px;
 }
 
-* {
-  box-sizing: border-box;
+html {
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #faf6f1;
+  color: #1b1616;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #e9d8cc;
+  color: #1b1616;
+}
+
+/* Focus: clay on light surfaces, nude on ink surfaces */
+.on-ink {
+  --ring: #e9d8cc;
+}
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-site px-5 md:px-10;
+  }
+
+  /* Technician's annotation lettering */
+  .anno {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Display sizes. Each sets --fs so Chinese can scale it to about 0.8x. */
+  .display {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    font-size: var(--fs);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+  .d-hero {
+    --fs: clamp(3.6rem, 9vw, 9.5rem);
+    line-height: 0.9;
+  }
+  .d-1 {
+    --fs: clamp(3rem, 7vw, 7rem);
+  }
+  .d-2 {
+    --fs: clamp(2.5rem, 5vw, 4.75rem);
+  }
+  .d-3 {
+    --fs: clamp(1.9rem, 3vw, 2.75rem);
+    line-height: 1.05;
+  }
+
+  /* Shared photo grade: warm, sharp, framed */
+  .photo {
+    filter: saturate(0.92) contrast(1.03);
+  }
+
+  .hairline {
+    border-color: rgba(27, 22, 22, 0.16);
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-m-ink px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-m-paper transition-colors duration-300 ease-calm hover:bg-m-clay;
+  }
+  .btn-primary-light {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-m-paper px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-m-ink transition-colors duration-300 ease-calm hover:bg-m-nude;
+  }
+  /* Square secondary button: hairline box */
+  .btn-line {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 border border-current px-6 text-[0.95rem] font-semibold tracking-[0.02em] transition-colors duration-300 ease-calm;
+  }
+  .link-under {
+    @apply underline decoration-1 underline-offset-[6px] transition-[text-decoration-color] duration-300;
+    text-decoration-color: currentColor;
+  }
+  .link-under:hover {
+    text-decoration-color: transparent;
+  }
+}
+
+/* Chinese: sans headings at about 0.8x, serif kept for Latin accents (.latin) */
+html[lang="zh-Hans"] .display {
+  font-family: var(--font-sans), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  font-weight: 500;
+  font-size: calc(var(--fs) * 0.8);
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+}
+html[lang="zh-Hans"] .display .latin,
+html[lang="zh-Hans"] .latin {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+}
+html[lang="zh-Hans"] .anno {
+  letter-spacing: 0.12em;
+}
+
+/* Reveal: fade + 12px rise */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: opacity 500ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Lash map draw-in, the one signature motion */
+.lm-draw .lm-l {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  animation: lm-draw 480ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+.lm-draw .lm-a {
+  opacity: 0;
+  animation: lm-fade 300ms ease-out forwards;
+  animation-delay: 600ms;
+}
+@keyframes lm-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes lm-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Horizontal snap row for the style index on mobile */
+.snap-row {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
+.snap-row > * {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lm-draw .lm-l {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+  .lm-draw .lm-a {
+    animation: none;
+    opacity: 1;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }
