@@ -1,33 +1,32 @@
 "use client"
 
-import { useLang, type Lang } from "@/lib/i18n"
-import { copy } from "@/lib/copy"
+import { useLang } from "@/lib/i18n"
 
-const OPTIONS: { id: Lang; label: string; lang: string }[] = [
-  { id: "en", label: "EN", lang: "en" },
-  { id: "zh", label: "中文", lang: "zh-Hans" },
-]
-
+/**
+ * One EN | 中文 switch: the whole control is a single button, so a press anywhere on it flips
+ * the language (no aiming for the other label). The current language is rose and underlined.
+ */
 export default function LangToggle({ className = "" }: { className?: string }) {
-  const { lang, setLang, t } = useLang()
+  const { lang, setLang } = useLang()
+  const next = lang === "en" ? "zh" : "en"
+  const label = lang === "en" ? "Language: English. 切换到中文" : "语言：中文。Switch to English"
+  const part = (on: boolean) =>
+    `transition-colors duration-300 ${on ? "text-m-rose underline decoration-1 underline-offset-[6px]" : "text-m-mute group-hover:text-m-ink"}`
   return (
-    <div role="group" aria-label={t(copy.nav.language)} className={`flex items-center ${className}`}>
-      {OPTIONS.map((o, i) => (
-        <span key={o.id} className="flex items-center">
-          {i > 0 && <span aria-hidden className="mx-0.5 h-3 w-px bg-m-rule" />}
-          <button
-            type="button"
-            lang={o.lang}
-            aria-pressed={lang === o.id}
-            onClick={() => setLang(o.id)}
-            className={`min-h-[44px] min-w-[44px] px-2 text-[0.875rem] font-semibold tracking-[0.12em] transition-colors duration-300 ${
-              lang === o.id ? "text-m-rose underline decoration-1 underline-offset-[6px]" : "text-m-mute hover:text-m-ink"
-            }`}
-          >
-            {o.label}
-          </button>
-        </span>
-      ))}
-    </div>
+    <button
+      type="button"
+      onClick={() => setLang(next)}
+      aria-label={label}
+      title={label}
+      className={`group inline-flex min-h-[44px] min-w-[88px] items-center justify-center gap-2.5 px-2 text-[0.875rem] font-semibold tracking-[0.12em] ${className}`}
+    >
+      <span lang="en" className={part(lang === "en")}>
+        EN
+      </span>
+      <span aria-hidden className="h-3 w-px bg-m-rule" />
+      <span lang="zh-Hans" className={part(lang === "zh")}>
+        中文
+      </span>
+    </button>
   )
 }

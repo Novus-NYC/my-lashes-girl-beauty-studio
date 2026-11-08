@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: "My Lash Girl Beauty Studio | Custom lash extensions near Grand Central",
     description,
-    images: [{ url: "/images/eye-portrait.jpg", width: 508, height: 640, alt: "Finished lash extensions on a client, eyes looking at the camera" }],
+    images: [{ url: "/images/eye-macro.jpg", width: 1000, height: 651, alt: "Close-up of one eye with finished lash extensions" }],
   },
   twitter: { card: "summary_large_image" },
 }

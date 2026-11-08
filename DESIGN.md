@@ -197,3 +197,9 @@ A design review found the site cold and templated: the clay accent read brick an
 - `EndCta.tsx` is deleted: each page now ends differently (home visit strip, styles strip, menu type links, about centred mark, visit contact rows).
 - Chinese headings that would orphan one character use `\u200b` break hints with `word-break: keep-all`.
 
+
+## 14. Photos and reviewer feedback (Nov 7, 2026)
+
+- **Photo search.** Instagram (logged out) tops out at the same 640px files already used; the old Wix domain has no archive. One better photo exists: `eye-macro.jpg` (1000 x 651), a sharp single-eye close-up the studio itself uploaded to Yelp on May 7, 2025 (also its ClassPass cover). It is the new "Up close." band on Home (nude, bled off the left edge, never above native width, cropped above the fabric at the bottom right, with inner and outer corner leaders) and the Open Graph image. Ask the studio for original, full-resolution photos.
+- **Footer.** Cut to three rows: lettering and Book, then address (to /visit), phone and Instagram, then the sign-off. Pages stay in the sticky navbar; hours on /visit.
+- **Language switch.** One button for both labels (`EN | 中文`): a press anywhere flips the language.

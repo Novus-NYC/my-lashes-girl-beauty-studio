@@ -3,9 +3,11 @@ import Image from "next/image"
 // Real posts from the studio's Instagram, small (360 to 524px wide): never shown above native size.
 // Shared treatment: the warm `.photo` grade, sharp corners, and two crop shapes only:
 // circles (Loupe) for single-eye details and halves (Half) for before / after; the chair
-// portrait on About is the one full-frame exception.
+// portrait on About and the eye macro on Home are the full-frame exceptions.
+// eye-macro.jpg (1000 x 651) is the studio's own upload to Yelp (May 7, 2025), also on ClassPass.
 
 export const photos = {
+  eyeMacro: { src: "/images/eye-macro.jpg", width: 1000, height: 651 },
   eyePortrait: { src: "/images/eye-portrait.jpg", width: 508, height: 640 },
   closeupPair: { src: "/images/eye-closeup-pair.jpg", width: 481, height: 640 },
   naturalTrio: { src: "/images/natural-trio.jpg", width: 515, height: 640 },

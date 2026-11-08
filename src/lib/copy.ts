@@ -57,6 +57,8 @@ export const copy = {
     heroMapCaption: b("Anime set · illustrative map", "动漫款 · 设计示意图"),
     sheet: b("Lash map", "睫毛设计图"),
     loupe: b("Finished set · detail", "完成效果 · 细节"),
+    macroTitle: b("Up close.", "近看。"),
+    macroLine: b("A finished set from the studio, shown large.", "工作室完成的一套睫毛，放大来看。"),
     chooseStyle: b("Choose a style", "选择款式"),
     explorerLead: b(
       "Pick a style and the map redraws. Prices are from our Square booking page.",

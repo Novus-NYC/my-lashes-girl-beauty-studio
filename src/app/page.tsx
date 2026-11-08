@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { T, Other } from "@/lib/i18n"
 import { copy } from "@/lib/copy"
@@ -121,6 +122,50 @@ export default function HomePage() {
               <NewTab />
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* 1b. Up close (nude): the map above, the result here. The studio's one large photo,
+          bled off the left edge, never above its 1000px native width, with two technician's
+          leaders marking the corners the map names. Cropped above the fabric at the bottom right. */}
+      <section className="overflow-x-clip bg-m-nude py-14 text-m-ink md:py-20" aria-labelledby="macro-title">
+        <div className="container-site grid gap-8 md:grid-cols-12 md:items-end md:gap-10">
+          <Reveal className="relative -mx-5 md:col-span-8 md:-ml-[calc((100vw-min(100vw,1320px))/2+2.5rem)] md:mr-0">
+            <figure className="relative ml-auto w-full max-w-[1000px]">
+              <div className="relative aspect-[1000/560] w-full overflow-hidden">
+                <Image
+                  src={photos.eyeMacro.src}
+                  alt="Close-up of one eye with finished lash extensions"
+                  width={photos.eyeMacro.width}
+                  height={photos.eyeMacro.height}
+                  sizes="(max-width: 768px) 100vw, 1000px"
+                  className="photo absolute inset-x-0 top-0 h-auto w-full"
+                />
+              </div>
+              {/* leaders: dot on the corner, rule up to an annotation */}
+              <span aria-hidden className="absolute left-[24%] top-[42%] hidden h-[32%] border-l border-m-ink/70 sm:block" />
+              <span aria-hidden className="absolute left-[24%] top-[74%] hidden size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-m-ink sm:block" />
+              <span className="anno absolute left-[24%] top-[42%] hidden -translate-y-full bg-m-paper px-2 py-1 sm:block">
+                <T t={copy.common.outer} />
+              </span>
+              <span aria-hidden className="absolute left-[74%] top-[42%] hidden h-[34%] border-l border-m-ink/70 sm:block" />
+              <span aria-hidden className="absolute left-[74%] top-[76%] hidden size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-m-ink sm:block" />
+              <span className="anno absolute left-[74%] top-[42%] hidden -translate-y-full bg-m-paper px-2 py-1 sm:block">
+                <T t={copy.common.inner} />
+              </span>
+            </figure>
+          </Reveal>
+          <Reveal index={1} className="md:col-span-4 md:pb-4">
+            <h2 id="macro-title" className="display d-1">
+              <T t={copy.home.macroTitle} />
+            </h2>
+            <p className="mt-5 max-w-[28ch]">
+              <T t={copy.home.macroLine} />
+            </p>
+            <Link href="/styles" className="link-under mt-5 inline-flex min-h-[44px] items-center font-semibold">
+              <T t={copy.home.seeStyles} />
+            </Link>
+          </Reveal>
         </div>
       </section>
 
