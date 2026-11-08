@@ -222,11 +222,6 @@ export const copy = {
     home: b("Back to home", "返回首页"),
   },
   footer: {
-    pages: b("Pages", "页面"),
-    elsewhere: b("Elsewhere", "其他平台"),
-    studio: b("Studio", "工作室"),
     hours: b("Open 7 days, by appointment", "每周七天营业，需预约"),
-    hoursSentence: b("Open 7 days, by appointment.", "每周七天营业，需预约。"),
-    seeHours: b("See hours", "查看营业时间"),
   },
 }
