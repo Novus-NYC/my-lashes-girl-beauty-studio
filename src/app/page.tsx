@@ -2,13 +2,13 @@ import Link from "next/link"
 import { T, Other } from "@/lib/i18n"
 import { copy } from "@/lib/copy"
 import { site } from "@/lib/site"
-import { lashStyles, styleById, mmRange } from "@/lib/menu"
+import { styleById, mapLabel } from "@/lib/menu"
 import LashMap from "@/lib/components/LashMap"
-import Photo, { photos } from "@/lib/components/Photo"
+import { photos, Loupe, Half } from "@/lib/components/Photo"
 import Reveal from "@/lib/components/Reveal"
 import Reviews from "@/lib/components/Reviews"
-import Price from "@/lib/components/Price"
-import { TodayLine } from "@/lib/components/TodayHours"
+import StyleExplorer from "@/lib/components/StyleExplorer"
+import { TodayBlock } from "@/lib/components/TodayHours"
 
 const NewTab = () => (
   <span className="sr-only">
@@ -17,211 +17,184 @@ const NewTab = () => (
   </span>
 )
 
+/** Small paper tag set inside a photo corner: BEFORE / AFTER */
+const Tag = ({ t }: { t: { en: string; zh: string } }) => (
+  <span className="anno absolute left-0 top-0 z-10 bg-m-clay px-2.5 py-1.5 text-m-paper">
+    <T t={t} />
+  </span>
+)
+
 export default function HomePage() {
   const anime = styleById("anime")
+  const corners = { inner: copy.common.inner, outer: copy.common.outer }
 
   return (
     <>
-      {/* 1. Hero (paper) */}
-      <section className="bg-m-paper">
-        <div className="container-site grid gap-y-14 pb-16 pt-8 md:grid-cols-12 md:gap-x-10 md:pb-32 md:pt-14">
-          <div className="flex flex-col md:col-span-7">
-            <p className="anno text-m-mute">
+      {/* 1. Hero (paper): the worksheet. A nude disc (the logo's circle) carrying a large lash map. */}
+      <section className="relative overflow-x-clip bg-m-paper">
+        <div className="container-site">
+          <div className="anno flex items-center justify-between gap-6 border-b border-m-rule py-3.5 text-m-mute">
+            <span>
+              <T t={copy.home.sheet} /> · <Other t={copy.home.sheet} />
+            </span>
+            <span className="hidden text-right sm:inline">
               <T t={copy.home.annotation} />
-            </p>
-            <h1 className="display d-hero mt-7 max-w-[11ch]">
-              <T t={copy.home.title} />
-            </h1>
-            <p className="mt-8 max-w-[36ch] text-[1.2rem] leading-[1.55]">
-              <T t={copy.home.line} />
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-              <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-primary">
-                <T t={copy.common.bookOnSquare} />
+            </span>
+          </div>
+
+          <div className="grid pb-16 pt-8 md:grid-cols-12 md:gap-x-10 md:pb-20 md:pt-10">
+            <div className="relative z-10 flex flex-col md:col-span-7">
+              <p className="anno text-m-mute sm:hidden">
+                <T t={copy.home.annotation} />
+              </p>
+              <h1 className="display d-hero mt-5 max-w-[9.5ch] [word-break:keep-all] sm:mt-0">
+                <T t={copy.home.title} />
+              </h1>
+              <p className="mt-8 max-w-[34ch] text-[1.2rem] leading-[1.55]">
+                <T t={copy.home.line} />
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-primary">
+                  <T t={copy.common.bookOnSquare} />
+                  <NewTab />
+                </a>
+                <Link href="/styles" className="link-under inline-flex min-h-[44px] items-center font-semibold">
+                  <T t={copy.home.seeStyles} />
+                </Link>
+              </div>
+              <a
+                href={site.classpass}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-9 inline-flex min-h-[44px] w-fit items-baseline gap-3 border-t border-m-rule pt-4 text-m-mute transition-colors hover:text-m-ink"
+              >
+                <span className="latin font-serif text-[2rem] leading-none text-m-ink">{site.rating.score}</span>
+                <span className="anno">
+                  <T t={copy.reviews.count} />
+                </span>
                 <NewTab />
               </a>
-              <Link href="/styles" className="link-under inline-flex min-h-[44px] items-center font-semibold">
-                <T t={copy.home.seeStyles} />
-              </Link>
             </div>
-            <a
-              href={site.classpass}
-              target="_blank"
-              rel="noreferrer"
-              className="anno mt-10 inline-flex min-h-[44px] w-fit items-center gap-3 border-t border-m-rule pt-4 text-m-mute transition-colors hover:text-m-ink"
-            >
-              <T t={copy.home.proof} />
-              <NewTab />
-            </a>
-          </div>
 
-          <div className="md:col-span-5">
-            <div className="relative ml-auto w-[min(76vw,440px)] md:mr-0">
-              <Photo
-                photo={photos.eyePortrait}
-                alt="A client's eyes with finished, wispy lash extensions, looking at the camera"
-                caption={copy.home.heroCaption}
-                maxWidth={440}
-                priority
-                sizes="(max-width: 768px) 76vw, 440px"
-                className="ml-auto text-right"
-              />
-              <div className="absolute -left-6 bottom-12 w-[82%] border border-m-rule bg-m-paper px-3 pb-3 pt-2 md:-left-20 md:bottom-16 md:w-[96%] md:px-5 md:pb-4 md:pt-3">
-                <LashMap
-                  lengths={anime.lengths}
-                  density="anime"
-                  size="md"
-                  draw
-                  label={`Lash map for the Anime Set: ${mmRange(anime.lengths)} millimetres`}
-                />
-                <p className="anno mt-1 flex justify-between text-m-mute">
-                  <T t={copy.home.heroMapCaption} />
-                  <span className="hidden sm:inline">
-                    <T t={{ en: "Inner → outer", zh: "内 → 外" }} />
-                  </span>
-                </p>
+            {/* The sheet */}
+            <div className="relative mt-12 h-[112vw] max-h-[520px] md:col-span-5 md:col-start-8 md:mt-0 md:h-[660px] md:max-h-none">
+              <div aria-hidden className="absolute left-[8vw] top-0 aspect-square w-[108vw] rounded-full bg-m-nude md:-left-12 md:w-[720px]" />
+              {/* mobile map */}
+              <div className="absolute inset-x-0 top-[16vw] text-m-ink md:hidden">
+                <LashMap lengths={anime.lengths} density="anime" size="md" draw label={mapLabel(anime)} />
               </div>
+              {/* desktop map: drawn large, the hero's star */}
+              <div className="absolute -left-[150px] top-[56px] hidden w-[720px] text-m-ink md:block">
+                <LashMap lengths={anime.lengths} density="anime" size="xl" draw label={mapLabel(anime)} corners={corners} />
+              </div>
+              <p className="anno absolute bottom-24 right-0 hidden max-w-[18ch] text-right text-m-ink md:block">
+                <T t={copy.home.heroMapCaption} />
+              </p>
+
+              {/* Loupe: a finished set, shown at native size inside a reticle ring */}
+              <figure className="absolute bottom-0 left-0 w-[44vw] max-w-[260px] md:-left-16 md:bottom-0 md:w-[260px]">
+                <div className="rounded-full border border-m-ink/40 p-2">
+                  <Loupe
+                    photo={photos.eyePortrait}
+                    alt="Close-up of a client's eye with finished, wispy lash extensions"
+                    cx={128}
+                    cy={128}
+                    d={244}
+                    priority
+                    sizes="(max-width: 768px) 44vw, 244px"
+                  />
+                </div>
+                <figcaption className="anno mt-3 text-m-ink">
+                  <T t={copy.home.loupe} />
+                </figcaption>
+              </figure>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Style index (nude) */}
-      <section className="bg-m-nude py-20 md:py-28" aria-labelledby="index-title">
+      {/* 2. How a set is designed (ink): Look, Map, Apply, then the style explorer */}
+      <section className="on-ink bg-m-ink py-20 text-m-paper md:py-28" aria-labelledby="process-title">
         <div className="container-site">
-          <div className="grid gap-8 md:grid-cols-12 md:items-end">
-            <Reveal className="md:col-span-7">
-              <h2 id="index-title" className="display d-2">
-                <T t={copy.home.indexTitle} />
-              </h2>
-            </Reveal>
-            <Reveal index={1} className="md:col-span-4 md:col-start-9">
-              <p className="text-m-ink">
-                <T t={copy.home.indexLead} />
-              </p>
-              <Link href="/styles" className="link-under mt-3 inline-flex min-h-[44px] items-center font-semibold">
-                <T t={copy.home.indexLink} />
-              </Link>
-            </Reveal>
-          </div>
-
-          <ul className="snap-row -mx-5 mt-12 flex scroll-px-5 gap-4 overflow-x-auto px-5 pb-2 md:mx-0 md:mt-16 md:grid md:grid-cols-5 md:gap-0 md:overflow-visible md:px-0 md:pb-0">
-            {lashStyles.map((s, i) => (
-              <Reveal
-                as="li"
-                index={i}
-                key={s.id}
-                className="w-[85vw] max-w-[340px] shrink-0 border-t border-m-ink/30 md:w-auto md:max-w-none md:border-l md:px-5 md:first:border-l-0 md:first:pl-0 md:last:pr-0"
-              >
-                <Link href={`/styles#${s.id}`} className="group block pb-6 pt-6">
-                  <LashMap lengths={s.lengths} density={s.id} size="sm" label={`Lash map for the ${s.name.en}: ${mmRange(s.lengths)} millimetres`} />
-                  <h3 className="mt-6 font-serif text-[2rem] leading-none transition-colors group-hover:text-m-clay">
-                    <T t={s.short} />
-                  </h3>
-                  <p className="mt-1 text-[0.9rem] text-m-ink">
-                    <Other t={s.short} />
-                  </p>
-                  <p className="mt-5 flex items-baseline justify-between gap-3 border-t border-m-ink/20 pt-3">
-                    <Price value={s.price} className="text-[1.6rem] leading-none" />
-                    <span className="anno text-m-ink">
-                      <T t={s.duration} />
-                    </span>
-                  </p>
-                </Link>
-              </Reveal>
-            ))}
-          </ul>
-          <p className="anno mt-6 text-m-ink">
-            <T t={copy.common.illustrative} />
-          </p>
-        </div>
-      </section>
-
-      {/* 3. How a set is designed (paper) */}
-      <section className="bg-m-paper py-20 md:py-32" aria-labelledby="process-title">
-        <div className="container-site">
-          <div className="grid gap-6 md:grid-cols-12">
-            <Reveal className="md:col-span-6">
-              <h2 id="process-title" className="display d-2">
+          <div className="grid gap-10 md:grid-cols-12 md:items-end">
+            <Reveal className="md:col-span-5">
+              <h2 id="process-title" className="display d-1">
                 <T t={copy.home.processTitle} />
               </h2>
-            </Reveal>
-            <Reveal index={1} className="md:col-span-4 md:col-start-9 md:self-end">
-              <p className="text-m-mute">
+              <p className="mt-6 max-w-[34ch] text-m-nude">
                 <T t={copy.home.processLead} />
               </p>
             </Reveal>
+            <ol className="grid gap-6 sm:grid-cols-3 sm:gap-0 md:col-span-7">
+              {copy.home.steps.map((s, i) => (
+                <Reveal as="li" index={i} key={s.word.en} className={`border-t pt-4 sm:pr-6 ${i === 1 ? "border-m-paper" : "border-m-paper/30"}`}>
+                  <h3 className={`font-serif text-[2.2rem] leading-none ${i === 1 ? "italic" : ""}`}>
+                    <T t={s.word} />
+                  </h3>
+                  <p className="mt-3 text-[0.95rem] text-m-nude">
+                    <T t={s.body} />
+                  </p>
+                </Reveal>
+              ))}
+            </ol>
           </div>
 
-          <ol className="relative mt-14 grid gap-12 border-l border-m-ink/40 pl-8 md:mt-20 md:grid-cols-[1fr_1.25fr_1fr] md:gap-10 md:border-l-0 md:border-t md:pl-0">
-            {copy.home.steps.map((s, i) => (
-              <Reveal as="li" index={i} key={s.word.en} className="relative md:pt-10">
-                {/* tick on the hairline */}
-                <span aria-hidden className="absolute -left-8 top-3 h-px w-4 bg-m-ink md:left-0 md:top-[-8px] md:h-4 md:w-px" />
-                <h3 className="display d-2">
-                  <T t={s.word} />
-                </h3>
-                <p className="mt-4 max-w-[30ch] text-m-ink">
-                  <T t={s.body} />
-                </p>
-              </Reveal>
-            ))}
-          </ol>
+          <div className="mt-16 md:mt-24">
+            <StyleExplorer initial="anime" />
+          </div>
         </div>
       </section>
 
-      {/* 4. Before and after (ink) */}
-      <section className="on-ink bg-m-ink py-20 text-m-paper md:py-28" aria-labelledby="ba-title">
+      {/* 3. Before and after (clay): one pair, split and overlapped */}
+      <section className="on-clay bg-m-clay py-20 text-m-paper md:py-28" aria-labelledby="ba-title">
         <div className="container-site grid gap-14 md:grid-cols-12 md:gap-10">
-          <Reveal className="md:col-span-4">
-            <h2 id="ba-title" className="display d-2">
+          <Reveal className="md:col-span-4 md:self-center">
+            <h2 id="ba-title" className="display d-1">
               <T t={copy.home.baTitle} />
             </h2>
-            <p className="mt-6 max-w-[34ch] text-m-nude">
-              <T t={copy.home.baBody} />
+            <p className="mt-6 max-w-[30ch]">
+              <T t={copy.home.baPair} />
             </p>
             <a href={site.instagram} target="_blank" rel="noreferrer" className="link-under mt-6 inline-flex min-h-[44px] items-center font-semibold">
               <T t={copy.home.baLink} />
               <NewTab />
             </a>
           </Reveal>
-          <div className="grid grid-cols-2 items-start gap-3 sm:gap-6 md:col-span-8 md:flex md:justify-end md:gap-8">
-            <Reveal className="md:w-[360px]">
-              <Photo
+
+          <div className="relative md:col-span-8">
+            <Reveal className="zoom-hover relative ml-auto w-full max-w-[483px] md:mr-6">
+              <Tag t={copy.common.after} />
+              <Half
                 photo={photos.beforeAfter1}
-                alt="One eye before lash extensions (top) and after, with long wispy lashes (bottom)"
-                caption={copy.home.baCaption1}
-                maxWidth={360}
-                sizes="(max-width: 768px) 45vw, 360px"
-                captionClass="text-m-nude"
+                alt="After: an eye with long, spiky, separated lash extensions"
+                y0={336}
+                y1={640}
+                sizes="(max-width: 768px) 90vw, 483px"
               />
             </Reveal>
-            <Reveal index={1} className="mt-12 md:mt-28 md:w-[360px]">
-              <Photo
-                photo={photos.animeBeforeAfter}
-                alt="An eye before (top) and after an Anime Set with spiky, separated lashes (bottom)"
-                caption={copy.home.baCaption2}
-                maxWidth={360}
-                sizes="(max-width: 768px) 45vw, 360px"
-                captionClass="text-m-nude"
-              />
+            <Reveal
+              index={1}
+              className="zoom-hover relative -mt-14 w-[64%] max-w-[300px] outline outline-[10px] outline-m-clay md:absolute md:bottom-[-56px] md:left-[4%] md:mt-0 md:w-[300px]"
+            >
+              <Tag t={copy.common.before} />
+              <Half photo={photos.beforeAfter1} alt="Before: the eye with its natural lashes, before extensions" y0={0} y1={300} sizes="(max-width: 768px) 64vw, 300px" />
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* 5. Reviews (nude) */}
+      {/* 4. Reviews (nude) */}
       <Reviews />
 
-      {/* 6. Visit strip (paper) */}
-      <section className="bg-m-paper py-20 md:py-28" aria-labelledby="visit-title">
+      {/* 5. Visit strip (paper) with an ink "today" panel lifted into the reviews */}
+      <section className="bg-m-paper pb-20 pt-16 md:pb-28 md:pt-0" aria-labelledby="visit-title">
         <div className="container-site grid gap-12 md:grid-cols-12 md:gap-10">
-          <Reveal className="md:col-span-7">
-            <h2 id="visit-title" className="display d-2 max-w-[12ch]">
+          <Reveal className="md:col-span-7 md:pt-24">
+            <h2 id="visit-title" className="display d-1 max-w-[10ch]">
               <T t={copy.home.visitTitle} />
             </h2>
             <address className="mt-10 not-italic">
-              <span className="block font-serif text-[1.9rem] leading-tight md:text-[2.4rem]">{site.address.line1}</span>
+              <span className="latin block font-serif text-[2rem] leading-tight md:text-[2.6rem]">{site.address.line1}</span>
               <span className="block text-m-mute">
                 {site.address.line2} · <T t={copy.common.floor} />
               </span>
@@ -229,24 +202,30 @@ export default function HomePage() {
             <p className="mt-5 max-w-[40ch]">
               <T t={copy.common.landmark} />
             </p>
+            <Link href="/visit" className="link-under mt-4 inline-flex min-h-[44px] items-center font-semibold">
+              <T t={copy.home.visitLink} />
+            </Link>
           </Reveal>
-          <Reveal index={1} className="flex flex-col gap-6 md:col-span-4 md:col-start-9 md:self-end">
-            <TodayLine />
-            <a href={site.phoneHref} className="tnum link-under inline-flex min-h-[44px] w-fit items-center text-[1.15rem]">
-              {site.phoneDisplay}
-            </a>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-line text-m-ink hover:bg-m-ink hover:text-m-paper">
-                <T t={copy.common.book} />
+          <Reveal index={1} className="on-ink relative z-10 flex flex-col gap-6 bg-m-ink p-7 text-m-paper md:col-span-5 md:-mt-24 md:self-start md:p-10">
+            <TodayBlock />
+            <p className="text-m-nude">
+              <span className="anno block text-m-paper">
+                <T t={copy.common.byAppointment} />
+              </span>
+              <span className="mt-2 block">
+                <T t={copy.common.mobile} />
+              </span>
+            </p>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-m-paper/25 pt-6">
+              <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-primary-light">
+                <T t={copy.common.bookOnSquare} />
                 <NewTab />
               </a>
-              <Link href="/visit" className="link-under inline-flex min-h-[44px] items-center font-semibold">
-                <T t={copy.home.visitLink} />
-              </Link>
+              <a href={site.phoneHref} className="tnum link-under inline-flex min-h-[44px] items-center text-[1.1rem]">
+                <T t={copy.common.call} />
+                &nbsp;{site.phoneDisplay}
+              </a>
             </div>
-            <p className="border-t border-m-rule pt-4 text-m-mute">
-              <T t={copy.common.mobile} />
-            </p>
           </Reveal>
         </div>
       </section>

@@ -1,4 +1,5 @@
-import type { StyleId } from "@/lib/menu"
+import type { Bi, StyleId } from "@/lib/menu"
+import { T, SvgTitle } from "@/lib/i18n"
 
 /**
  * LashMap: a technician's lash mapping diagram drawn in SVG.
@@ -11,7 +12,7 @@ import type { StyleId } from "@/lib/menu"
  * Server-safe. The optional draw-in is pure CSS (see globals.css `.lm-draw`).
  */
 
-type Size = "xs" | "sm" | "md" | "lg"
+type Size = "xs" | "sm" | "md" | "lg" | "xl"
 
 export type LashMapProps = {
   lengths: number[]
@@ -20,7 +21,10 @@ export type LashMapProps = {
   annotate?: boolean
   size?: Size
   draw?: boolean
-  label: string
+  /** Accessible name, rendered as the SVG <title> in the current language */
+  label: Bi
+  /** Optional "inner corner" / "outer corner" callouts at the two ends of the lid */
+  corners?: { inner: Bi; outer: Bi }
   className?: string
 }
 
@@ -36,8 +40,8 @@ const SCALE = 6.2 // px per mm
 const ZONES = 5
 
 // Stroke widths in viewBox units so they render near 1.25 CSS px at each size
-const UNIT: Record<Size, number> = { xs: 3.4, sm: 2.1, md: 1.35, lg: 0.92 }
-const FONT: Record<Size, number> = { xs: 30, sm: 21, md: 12.5, lg: 9.2 }
+const UNIT: Record<Size, number> = { xs: 3.4, sm: 2.1, md: 1.35, lg: 0.92, xl: 0.72 }
+const FONT: Record<Size, number> = { xs: 30, sm: 21, md: 12.5, lg: 9.2, xl: 7.2 }
 
 const bez = (t: number): Pt => {
   const u = 1 - t
@@ -165,6 +169,7 @@ export default function LashMap({
   size = "md",
   draw = false,
   label,
+  corners,
   className = "",
 }: LashMapProps) {
   const u = UNIT[size]
@@ -182,13 +187,13 @@ export default function LashMap({
     <svg
       viewBox="0 0 400 200"
       role="img"
-      aria-label={label}
       className={`block h-auto w-full overflow-visible ${draw ? "lm-draw" : ""} ${className}`}
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
+      <SvgTitle t={label} />
       {/* crease */}
       <path d={crease} strokeWidth={u * 0.45} strokeOpacity={0.35} className="lm-l" pathLength={1} style={{ ["--d" as string]: "0ms" }} />
 
@@ -237,6 +242,17 @@ export default function LashMap({
         <circle cx={P2[0]} cy={P2[1]} r={u * 1.3} />
       </g>
 
+      {corners && (
+        <g className="lm-a" fill="currentColor" stroke="none" style={{ fontFamily: "var(--font-sans), system-ui, sans-serif", fontSize: fs * 0.82, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+          <text x={P0[0] - u * 5} y={P0[1] + fs * 0.3} textAnchor="end">
+            <T t={corners.inner} />
+          </text>
+          <text x={P2[0] + u * 5} y={P2[1] + fs * 0.3} textAnchor="start">
+            <T t={corners.outer} />
+          </text>
+        </g>
+      )}
+
       {annotate && (
         <g className="lm-a">
           {lengths.slice(0, ZONES).map((mm, z) => {
@@ -281,5 +297,21 @@ export default function LashMap({
         </g>
       )}
     </svg>
+  )
+}
+
+/**
+ * A map that keeps its annotations legible at both widths: the "md" drawing on phones,
+ * and a finer drawing (lg / xl) with corner callouts from the md breakpoint up.
+ */
+export function ResponsiveMap({ desktop = "lg", ...props }: Omit<LashMapProps, "size"> & { desktop?: "lg" | "xl" }) {
+  const { corners, className = "", ...rest } = props
+  return (
+    <>
+      <LashMap {...rest} size="md" className={`md:hidden ${className}`} />
+      <div className={`hidden md:block ${corners ? "pl-[11%]" : ""}`}>
+        <LashMap {...rest} corners={corners} size={desktop} className={className} />
+      </div>
+    </>
   )
 }

@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Wordmark from "./Wordmark"
 import LangToggle from "./LangToggle"
-import { useLang } from "@/lib/i18n"
+import { useLang, Other } from "@/lib/i18n"
+import { TodayLine } from "./TodayHours"
 import { copy } from "@/lib/copy"
 import { navLinks } from "@/lib/nav"
 import { site } from "@/lib/site"
@@ -87,9 +88,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               aria-current={isActive(l.href) ? "page" : undefined}
-              className={`relative flex min-h-[44px] items-center px-3 text-[0.95rem] transition-colors duration-300 hover:text-m-clay ${
-                isActive(l.href) ? "text-m-ink after:absolute after:inset-x-3 after:bottom-2 after:h-px after:bg-m-ink" : "text-m-ink"
-              }`}
+              className="rule-hover flex min-h-[44px] items-center px-3 text-[0.95rem] text-m-ink [--rx:0.75rem] [--ry:0.6rem]"
             >
               {t(l.label)}
             </Link>
@@ -137,7 +136,7 @@ export default function Navbar() {
           role="dialog"
           aria-modal="true"
           aria-label={t(copy.nav.main)}
-          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-m-paper lg:hidden"
+          className="swap-in fixed inset-0 z-50 flex flex-col overflow-y-auto bg-m-paper lg:hidden"
         >
           <div className="container-site flex items-center justify-between py-[18px]">
             <Link href="/" onClick={() => setOpen(false)} aria-label={t(copy.nav.home)}>
@@ -159,18 +158,23 @@ export default function Navbar() {
                     href={l.href}
                     onClick={() => setOpen(false)}
                     aria-current={isActive(l.href) ? "page" : undefined}
-                    className="display d-3 flex min-h-[64px] items-center justify-between py-3"
-                    style={{ ["--fs" as string]: "2.6rem" }}
+                    className="flex min-h-[68px] items-baseline justify-between gap-4 py-3"
                   >
-                    {t(l.label)}
-                    {isActive(l.href) && <span aria-hidden className="h-px w-10 bg-m-ink" />}
+                    <span className="display" style={{ ["--fs" as string]: "2.75rem" }}>
+                      {t(l.label)}
+                    </span>
+                    <span className="flex items-center gap-3 text-[0.9rem] text-m-mute">
+                      {isActive(l.href) && <span aria-hidden className="h-px w-8 self-center bg-m-ink" />}
+                      <Other t={l.label} />
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <div className="container-site flex flex-col gap-5 border-t border-m-rule py-6">
+          <div className="container-site flex flex-col gap-5 py-6">
+            <TodayLine />
             <div className="flex items-center justify-between">
               <span className="anno text-m-mute">{t(copy.nav.language)}</span>
               <LangToggle />

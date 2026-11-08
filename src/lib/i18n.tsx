@@ -60,3 +60,9 @@ export function Other({ t, className = "" }: { t: Bi; className?: string }) {
     </span>
   )
 }
+
+/** SVG <title> in the current language. <title> must receive a plain string child. */
+export function SvgTitle({ t }: { t: Bi }) {
+  const { lang } = useLang()
+  return <title>{t[lang]}</title>
+}

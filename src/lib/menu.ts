@@ -105,4 +105,12 @@ export const faceBody: MenuItem[] = [
 
 export const styleById = (id: StyleId) => lashStyles.find((s) => s.id === id)!
 
-export const mmRange = (lengths: number[]) => `${Math.min(...lengths)} to ${Math.max(...lengths)}`
+/** Accessible name for a style's lash map, in both languages. The lengths are illustrative. */
+export const mapLabel = (s: LashStyle): Bi => {
+  const lo = Math.min(...s.lengths)
+  const hi = Math.max(...s.lengths)
+  return {
+    en: `Illustrative lash map for the ${s.name.en}: ${lo} to ${hi} millimetres, inner corner to outer corner`,
+    zh: `${s.name.zh}睫毛设计示意图：${lo} 至 ${hi} 毫米，由内眼角到外眼角`,
+  }
+}

@@ -12,11 +12,12 @@ The site helps visitors pick a lash style, see its price and book on Square, in 
 
 | Route | Purpose |
 |---|---|
-| `/` | Hero with the Anime lash map, style index, how a set is designed, before and after, reviews, visit strip |
-| `/styles` | One section per set: full lash map, prices, time, 2 and 3 week refills, Book this set |
-| `/menu` | Full price list as a semantic table (lash sets, add-ons, face and body) |
-| `/about` | The studio, 8 years of lash artistry, woman-owned and Asian-owned, mobile service |
-| `/visit` | Address, directions from Grand Central, hours (today highlighted), map, contact |
+| `/` | Lash-map worksheet hero, how a set is designed with the interactive style explorer, before and after, reviews, visit strip |
+| `/styles` | Index of the five maps, then one section per set: full lash map, prices, time, 2 and 3 week refills, Book this set |
+| `/menu` | Service card: lash sets table (full set vs refills), add-ons and face and body as leader-dot lists |
+| `/about` | The studio, 8 years of lash artistry, woman-owned and Asian-owned, mobile service, reviews |
+| `/visit` | Address, today's hours, route from Grand Central, hours table (today highlighted), map, contact |
+| 404 | "This page isn't on the map." with links back |
 
 ## Where to edit things
 
@@ -24,7 +25,7 @@ The site helps visitors pick a lash style, see its price and book on Square, in 
 - Menu, prices, lash map lengths: `src/lib/menu.ts`
 - Every visible string (English and Chinese): `src/lib/copy.ts`
 - Language context and the `T` component: `src/lib/i18n.tsx`
-- Lash map diagram: `src/lib/components/LashMap.tsx`
+- Lash map diagram: `src/lib/components/LashMap.tsx`; style explorer: `src/lib/components/StyleExplorer.tsx`; photo crops: `src/lib/components/Photo.tsx`
 - Colors and fonts: `tailwind.config.ts`, `src/app/globals.css`, `src/app/layout.tsx`
 - Favicon: `src/app/icon.svg`; Apple touch icon: `src/app/apple-icon.tsx` (generated PNG, 180px)
 
@@ -34,6 +35,7 @@ The site helps visitors pick a lash style, see its price and book on Square, in 
 npm install
 npm run dev     # http://localhost:3000
 npm run build   # production build, must pass before deploy
+npm run lint    # TypeScript check (tsc --noEmit); Next 16 removed `next lint`
 ```
 
 Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 3. Fonts: Instrument Serif and Plus Jakarta Sans via `next/font`; Chinese uses the system CJK stack. Set `NEXT_PUBLIC_SITE_URL` to the production URL (defaults to `https://mylashgirlbeauty.com`).

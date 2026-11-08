@@ -22,7 +22,7 @@ Logo-swap test: the per-style lash maps with millimetre annotations, the 12th-fl
 
 ## 3. Type
 
-- Display Latin: **Instrument Serif** (`next/font/google`, 400 and italic). Hero headline `clamp(3.6rem, 9vw, 9.5rem)`, line-height 0.9, tracking -0.01em.
+- Display Latin: **Instrument Serif** (`next/font/google`, 400 and italic). Hero headline `clamp(3.6rem, 9.6vw, 9.75rem)` (about 138px at 1440), line-height 0.88, tracking -0.015em. `d-1` is `clamp(3rem, 7.4vw, 7.5rem)`.
 - Text and annotations: **Plus Jakarta Sans** (`next/font/google`, 400, 500, 600). Body 1.0625rem / 1.65. Annotation style: 0.72rem, uppercase, letter-spacing 0.16em, weight 600, tabular numbers (`font-variant-numeric: tabular-nums`).
 - Chinese: system CJK stack, no web font download: `"PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif` appended to both font stacks. When `lang` is `zh`, headings use the sans stack weight 500 at about 0.8x the Latin display size (serif Latin display looks wrong next to CJK), keep the italic serif only for Latin accents such as prices and "mm".
 - Wordmark: recreate the logo lettering as live text: "MY LASH GIRL" in Plus Jakarta Sans 300, letter-spacing 0.22em, with "BEAUTY STUDIO" small beneath, plus an inline SVG closed-eye mark (curved lid line, lashes fanning down-right, brow arc above) on a nude circle. Do not use the JPG.
@@ -34,11 +34,13 @@ Logo-swap test: the per-style lash maps with millimetre annotations, the 12th-fl
 | `paper` | `#FAF6F1` | Canvas |
 | `nude` | `#E9D8CC` | Primary brand (the logo circle). Full-section backgrounds, map zones |
 | `ink` | `#1B1616` | Primary text, lash strokes, dark sections, primary button |
-| `clay` | `#9C5B4D` | Supplemental accent: prices, active toggle, focus ring, small highlights. Passes AA on paper (about 5:1) |
+| `clay` | `#9C5B4D` | Supplemental, now also a full-section colour (before/after, hybrid, end CTAs, visit contact, today panels). Paper on clay 4.86:1 passes AA for body text |
 | `mute` | `#6E625C` | Muted text on paper and nude |
 | `rule` | `rgba(27,22,22,.16)` | Hairlines |
 
-Section background sequence on the homepage: paper (hero) → nude → paper → ink → nude → paper → ink footer. No gradients, no glass, no blobs, no rounded cards. Radius 0 except buttons (999px pills are allowed ONLY for the two primary CTAs; everything else square). Text on nude is ink or mute (check mute on nude ≥ 4.5:1; if not, use ink).
+Section background sequence on the homepage: paper (hero) → ink (how a set is designed + style explorer) → clay (before and after) → nude (reviews) → paper (visit) → ink footer. No two neighbouring sections share a colour on any page. No gradients, no glass, no blobs, no rounded cards. Radius 0 except buttons (pills only for primary CTAs) and the circle motif (the logo's nude disc and the photo loupes).
+
+Measured contrast (WCAG): ink/paper 16.6, ink/nude 12.9, mute/paper 5.5, paper/clay 4.86, clay/paper 4.86, mute/nude 4.25 (fails), clay/nude 3.77 (fails), clay/ink 3.42 (fails). Rules that follow: on nude use ink only; on clay use paper only; on ink use paper or nude; clay text only on paper. Focus ring: clay on light surfaces, nude on ink (`.on-ink`), paper on clay (`.on-clay`).
 
 ## 5. Photography
 
@@ -54,7 +56,12 @@ Files in `public/images/` (real posts from the studio's Instagram, small: 360 to
 | `before-after-2.jpg` | 482×640 | Before (top) / after (bottom) | Before/after |
 | `client-chair.jpg` | 360×640 | Client lying on the pink lash bed after a set | About / visit |
 
-Treatment: all photos share a subtle warm grade `filter: saturate(.92) contrast(1.03)`, sharp corners, a 1px rule frame and an annotation caption below (e.g. `ANIME SET · AFTER`). Alt text describes the lashes, never names clients. `next/image` with explicit `width`/`height` from the table.
+Treatment (all in `src/lib/components/Photo.tsx`): one warm grade `.photo { filter: saturate(.9) contrast(1.04) sepia(.06) }`, never above native size, and only two crop shapes:
+
+- **Loupe** (circle, from the logo's round mark): single-eye details, shown at native pixel size inside a hairline "reticle" ring. Positioned by the source pixel to centre (`cx`, `cy`) and a maximum diameter `d`.
+- **Half**: the top or bottom half of a stacked before/after post, cropped by source rows (`y0`, `y1`) so the watermark/label band between halves is cut out. Paired halves carry a small square `BEFORE` / `AFTER` tag.
+
+The chair portrait on About is the one full-frame image. A gentle 1.03 hover zoom (fine pointers only, off under reduced motion). Alt text describes the lashes, never names clients.
 
 ## 6. Pages and sections
 
@@ -65,29 +72,27 @@ Routes (replace template `src/app/pages/*`, delete the template folder):
 Nav: Styles 款式, Menu 价目, About 关于, Visit 到店. Primary nav CTA: **Book** / **预约** (Square). Language toggle `EN / 中文` in the nav.
 
 ### Home `/`
-1. **Hero (paper).** Asymmetric 7/5. Left: annotation row `274 MADISON AVE · SUITE 1205 · 12TH FLOOR`; headline from her own words: "Lashes designed for your eye shape." (中文: "为你的眼型设计的睫毛。"); one line: "Custom lash sets by an artist with 8 years of experience, a short walk from Grand Central."; CTAs: **Book on Square** (primary ink pill) + text link "See styles and prices" → /styles. Below CTAs a proof line: "4.9 on ClassPass · 100+ ratings" linked to the ClassPass page. Right: `eye-portrait.jpg` in a tall frame with a large `LashMap` (Anime) drawn in thin ink overlapping the frame's left edge by about 80px, annotations visible. The map draws in on load (stroke-dashoffset, 900ms) as the one signature motion; static under reduced motion.
-2. **Style index (nude).** Heading "Five sets, five maps." Five columns on desktop (scroll-snap horizontal row on mobile with visible next-card peek, 85vw cards), each a small `LashMap` + name + price + duration, no photos. Names and prices: Natural $80 · 1 hr, Full Set $120 · 1 hr, Anime $140 · 1 hr 30 min, Hybrid $160 · 1 hr 30 min, Volume $160 · 1 hr 45 min. Link to /styles.
-3. **How a set is designed (paper).** Three steps as a horizontal timeline drawn with a hairline, NOT numbered circles: "Look" (we study your eye shape and the look you want; bring a photo), "Map" (lengths and curl are planned zone by zone), "Apply" (lashes are applied one zone at a time). Source: ClassPass description and reviews ("Show her image of lash you like, she makes it happen"). Keep factual; no medical claims.
-4. **Before and after (ink).** Two images (`before-after-1.jpg`, `anime-before-after.jpg`) side by side at their natural size with captions, plus a short statement. Text pureza-on-ink equivalent: paper on ink.
-5. **Reviews (nude).** ClassPass 4.9 score set huge in Instrument Serif ("4.9") with "100+ ratings on ClassPass". Three short quotes, first name only, source "ClassPass":
-   - "Show her image of lash you like, she makes it happen, simple like that." Amber
-   - "So gentle and so detail oriented! Love my customized lashes!" (anonymous: attribute "ClassPass client")
-   - "My lashes last for a month and all my friends noticed the transformation." Laina
-   Add a code comment: confirm permission with the owner before launch.
-6. **Visit strip (paper).** Address, "Next to Chipotle on Madison at 40th, 12th floor, Suite 1205", today's hours highlighted (client-side by day), phone, Book button, link to /visit. Mobile service line: "Mobile lash service available. Ask when you book."
-7. **Footer (ink).**
+1. **Hero (paper): the worksheet.** A hairline header row (`LASH MAP · 睫毛设计图` left, address right). Left 7 columns: headline at about 138px, one line, Book on Square + "See styles and prices", ClassPass 4.9 proof. Right: a 720px nude disc (the logo circle) bleeding off the right edge, carrying a large Anime `LashMap` (720px, `xl`, mm callouts, zone lines, inner/outer corner callouts) that draws in on load. A 244px loupe of `eye-portrait.jpg` (native size) sits at the disc's lower-left edge, captioned `Finished set · detail`; `Anime set · illustrative map` labels the drawing. Mobile: text first, then disc, map (`md` size) and loupe.
+2. **How a set is designed (ink).** Title and lead left; Look / Map / Apply on three hairlines right (Map in italic). Below, the **style explorer** (`StyleExplorer.tsx`): a `radiogroup` of the five sets (roving tabindex; arrows, Home, End; selection follows focus; 5 across on phones, a ruled list on desktop) drives a large map that redraws with the draw-in (keyed by style) plus that set's Square price, time and refills, Book this set, and "Read the full map" (`/styles#id`). A polite live region announces the change. Labelled "Illustrative map" in both languages.
+3. **Before and after (clay).** One pair from `before-after-1.jpg`: the after half at native width, the before half overlapping its lower-left corner (10px clay outline separates them). Instagram link.
+4. **Reviews (nude).** `4.9` at 15rem beside Amber's quote as a display pull-quote (up to 5rem, hanging quote mark); the other two quotes smaller and offset (one italic). Reviews stay in English (`lang="en"`), note "shown in their original English".
+5. **Visit (paper).** "Up on the 12th floor." with the address in serif; an ink panel lifted into the reviews band with today's hours large (`TodayBlock`), by appointment, mobile service, Book and Call.
+6. **Footer (ink).**
 
 ### `/styles`
-One section per lash set, alternating layout. Each: large `LashMap` for that style with full annotations (length per zone), name EN/中文, price, duration, refill prices (2 wk / 3 wk), a one-line plain description of how the style looks (general lash-industry descriptions, not claims): Natural "Soft, close to your own lashes." Full Set "Fuller and defined, still everyday." Anime "Spiky, separated clusters for a doll-like, anime-inspired look." Hybrid "A mix of classic and volume lashes for texture." Volume "The densest, darkest set." Use photos where they match: Natural (`natural-trio.jpg`), Anime (`anime-before-after.jpg`), Full/Hybrid (`eye-closeup-pair.jpg`), Volume (no photo, map only). Each section ends with "Book this set" (Square link).
+Index (paper): headline left, a ruled jump list right (mini map, name, time, price per row; nude on hover). Then one section per set, each a different composition and colour: Natural (nude; map 7 cols, loupe of `natural-trio.jpg` breaking the map's corner), Full (paper; flipped, loupe of `eye-closeup-pair.jpg` above the map), Anime (ink; widest map, then spec and the before/after halves of `anime-before-after.jpg`), Hybrid (clay; map only, spec as two halves under it), Volume (paper; spec left, map right). Shared `Spec`: name, other-language name, description, full set price large with time, 2 and 3 week refills, Book this set. Maps use `ResponsiveMap` (md drawing on phones, lg/xl with corner callouts on desktop) captioned "Illustrative map, lengths in mm". Ends with a nude `EndCta`.
 
 ### `/menu`
-Full price list as a precise spec-sheet table (semantic `<table>`), grouped: Lash sets (set / 2-week refill / 3-week refill), Add-ons (Bottom lash $40 · 20 min, Lash removal $20 · 20 min, Eyebrow fixing $12 · 20 min), Face and body (Deep clean and hydration facial $80 · 1 hr, Swedish massage $79 · 1 hr, Sea salt body scrub $99 · 1 hr). Note: "Prices from our Square booking page. Final price is confirmed when you book." Mobile: each row stacks, no horizontal scroll.
+A technician's service card. Header: `Service card · 服务价目卡`, "Menu" at hero size, the Square note and Book. The lash set card is a 1px ink-ruled sheet with an ink title strip and a semantic `<table>`: Style (mini map, name, other-language name, links to `/styles#id`) | **Full set** (nude column band, largest prices) | 2-week refill | 3-week refill. Phones: each row stacks to name, then three labelled cells with the nude full-set cell first. Add-ons (ink) and Face and body (nude, flipped) are leader-dot lists (`name ······ $40`, time and other-language name below). Clay `EndCta`. Every price comes from `menu.ts`.
 
 ### `/about`
-The studio and the artist: 8 years of lash artistry experience (from the studio's Instagram), customized sets for each eye shape, woman-owned and Asian-owned (ClassPass highlights), mobile lash service. Do NOT name the artist (unconfirmed; code comment: reviews mention "Chrissy", confirm). Photos: `client-chair.jpg`, `before-after-2.jpg`. Reviews block (reuse). CTA Book.
+Hero (paper): "8 years of lash artistry." at hero size, lead and body left; `client-chair.jpg` at native size breaking out of a nude block that bleeds right, with an ink `Woman-owned · Asian-owned` tag overlapping the photo's lower edge. Clay band: the Instagram line "Custom lash designs for your unique eye shape." at display size. Paper spec sheet (facts on hairlines, a small Natural map). Ink: two halves of `before-after-2.jpg` (two angles of one set) overlapping. Reviews (nude). Clay `EndCta`. The artist is still not named.
 
 ### `/visit`
-Address block huge; directions copy from ClassPass in plain words: "From Grand Central, walk to Madison Avenue and 40th Street. We're at 274 Madison, next to Chipotle. Take the elevator to the 12th floor, Suite 1205." Hours table (Yelp; code comment: confirm, Square shows no hours): Mon 2:00 PM to 8:00 PM; Tue 10:00 AM to 8:00 PM; Wed 10:00 AM to 8:00 PM; Thu 10:00 AM to 6:30 PM; Fri 10:00 AM to 6:00 PM; Sat 11:00 AM to 2:00 PM and 5:00 PM to 8:00 PM; Sun 11:00 AM to 5:00 PM. Appointment only. Embedded Google Map iframe (`https://www.google.com/maps?q=274+Madison+Ave+Suite+1205+New+York+NY+10016&output=embed`, `loading="lazy"`, title attr). Arrival note from ClassPass: "Please arrive a few minutes early to settle in." Phone call button, Book button, Instagram link.
+Hero (paper): "274 Madison / Avenue" at hero size, suite and landmark line; a clay today panel (`TodayBlock`, appointment only, arrive early, Book, Call) overlapping into the next band. Route (nude): the ClassPass directions drawn as a measured line with five stops (Grand Central → Madison and 40th → 274 Madison next to Chipotle → elevator to the 12th floor → Suite 1205), horizontal on desktop, vertical on phones. Hours and map (paper, 5/7): `HoursTable` with today's row in clay with paper text and a "Today" label, each range on its own line; Google Maps embed (grayscale, warm). Contact (clay): Book, phone at display size, Instagram, a loupe of the chair photo.
+
+### 404 (`src/app/not-found.tsx`)
+"This page isn't on the map." with Back to home, the four page links on hairlines, and a Natural map on a nude disc.
 
 ## 7. Data (centralize in `src/lib/site.ts` and `src/lib/menu.ts`)
 
@@ -135,6 +140,14 @@ Map rendering: zones go inner corner → outer corner. Lash count per zone: natu
 - `Navbar` (client): fixed, paper with transparent border at top, becomes paper with hairline bottom rule and slight compression (py 18px → 12px) after scroll. Mobile: full-screen paper sheet, close button, Escape closes, focus moves into the sheet, body scroll locked, links large serif, language toggle and Book button at bottom.
 - `Footer`: ink; wordmark + eye mark; address; phone; hours summary; links (Styles, Menu, About, Visit, Book, Instagram, ClassPass, Yelp); `Made by Novus` exact text linking to https://novusnyc.org with target _blank rel noreferrer.
 - `Reveal`: IntersectionObserver fade + 12px rise, 500ms, stagger 60ms; reduced motion shows everything immediately.
+- `LashMap` additions: `xl` size (finest strokes, for maps 700px and wider), optional `corners` callouts ("Inner corner" / "Outer corner"), and a bilingual `label` rendered as the SVG `<title>` through the client `SvgTitle` (React needs a plain string inside `<title>`). `mapLabel(style)` in `menu.ts` builds the label and says "illustrative". `ResponsiveMap` renders the md drawing on phones and lg/xl from `md` up.
+- `StyleExplorer` (client): see Home section 2.
+- `Loupe` and `Half` in `Photo.tsx`: the two photo crops (see §5).
+- `TodayHours.tsx`: `HoursTable` (today in clay), `TodayLine` (`tone` paper or ink) and `TodayBlock` (large readout for ink or clay panels).
+- `EndCta` takes `tone` (`clay` default, or `nude`) and offers Book, Call and one internal link.
+- Footer: the logo lettering set large as the sign-off with the eye mark, today's hours, Call and Book beside it; then address, pages, elsewhere, `Made by Novus`.
+- Navbar: page links use a hairline that draws in on hover/focus/current (`.rule-hover`); the mobile sheet shows each page's other-language name, today's hours, the language toggle, Book and Call.
+- Motion vocabulary: map draw-in (hero and explorer), reveal fade-up, explorer readout swap (360ms), hairline draw on links, 1.03 photo hover zoom. All off or instant under `prefers-reduced-motion`.
 - `TodayHours` client: highlights today's row (America/New_York day).
 
 ## 10. Copy rules
@@ -151,6 +164,7 @@ No em dashes. No leading zeroes. Times like "10:00 AM". Never invent: artist nam
 ## 12. Tech
 
 - Pin `next` 16.2.12, `react` 19.2.6, `react-dom` 19.2.6. Keep Tailwind 3 with tokens. `npm run build` must pass.
+- `npm run lint` runs `tsc --noEmit`: Next 16 removed `next lint`, and no ESLint dependency is installed. Add ESLint later if wanted.
 - Layout: no max-width `main` wrapper; container `max-w-[1320px] px-5 md:px-10`.
 - Replace README with a business README including a "Confirm with owner" list.
 - Keep `AGENTS.md` and `CLAUDE.md` identical (do not edit them).

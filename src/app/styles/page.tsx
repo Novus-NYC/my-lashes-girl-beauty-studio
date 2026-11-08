@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
+import type { ReactNode } from "react"
 import { T, Other } from "@/lib/i18n"
 import { copy } from "@/lib/copy"
 import { site } from "@/lib/site"
-import { lashStyles, mmRange, type StyleId } from "@/lib/menu"
-import LashMap from "@/lib/components/LashMap"
-import Photo, { photos } from "@/lib/components/Photo"
+import { lashStyles, styleById, mapLabel, type LashStyle, type Bi } from "@/lib/menu"
+import LashMap, { ResponsiveMap } from "@/lib/components/LashMap"
+import { photos, Loupe, Half } from "@/lib/components/Photo"
 import Reveal from "@/lib/components/Reveal"
 import Price from "@/lib/components/Price"
 import EndCta from "@/lib/components/EndCta"
@@ -16,137 +17,253 @@ export const metadata: Metadata = {
   alternates: { canonical: "/styles" },
 }
 
-// Photos only where they match the style (DESIGN.md §6). Hybrid and Volume are map only.
-const stylePhoto: Partial<Record<StyleId, { photo: (typeof photos)[keyof typeof photos]; alt: string; caption: { en: string; zh: string } }>> = {
-  natural: {
-    photo: photos.naturalTrio,
-    alt: "Three close-ups of eyes with soft, natural lash extensions",
-    caption: copy.styles.captions.natural,
-  },
-  full: {
-    photo: photos.closeupPair,
-    alt: "Two extreme close-ups of one eye with full, wispy lash extensions",
-    caption: copy.styles.captions.full,
-  },
-  anime: {
-    photo: photos.animeBeforeAfter,
-    alt: "An eye before (top) and after an Anime Set with spiky, separated lashes (bottom)",
-    caption: copy.styles.captions.anime,
-  },
+type Tone = "paper" | "nude" | "ink" | "clay"
+
+const tone: Record<Tone, { bg: string; text: string; muted: string; rule: string; btn: string; extra: string }> = {
+  paper: { bg: "bg-m-paper", text: "text-m-ink", muted: "text-m-mute", rule: "border-m-ink/25", btn: "btn-line text-m-ink hover:bg-m-ink hover:text-m-paper", extra: "" },
+  nude: { bg: "bg-m-nude", text: "text-m-ink", muted: "text-m-ink", rule: "border-m-ink/25", btn: "btn-line text-m-ink hover:bg-m-ink hover:text-m-paper", extra: "" },
+  ink: { bg: "bg-m-ink", text: "text-m-paper", muted: "text-m-nude", rule: "border-m-paper/25", btn: "btn-primary-light", extra: "on-ink" },
+  clay: { bg: "bg-m-clay", text: "text-m-paper", muted: "text-m-paper", rule: "border-m-paper/30", btn: "btn-primary-light", extra: "on-clay" },
 }
 
+const corners = { inner: copy.common.inner, outer: copy.common.outer }
+
+/** Name, description, the three prices and Book. `wide` lays it out as two halves under a full-width map. */
+function Spec({ s, t, wide = false }: { s: LashStyle; t: Tone; wide?: boolean }) {
+  const c = tone[t]
+  const rows = [
+    { k: copy.styles.refill2, price: s.refill2.price, dur: s.refill2.duration },
+    { k: copy.styles.refill3, price: s.refill3.price, dur: s.refill3.duration },
+  ]
+  const book = (
+    <a href={site.bookUrl} target="_blank" rel="noreferrer" className={`${c.btn} mt-9`}>
+      <T t={copy.styles.bookThis} />
+      <span className="sr-only">
+        {" "}
+        <T t={copy.common.opensNew} />
+      </span>
+    </a>
+  )
+  return (
+    <div className={wide ? "grid md:grid-cols-12 md:gap-x-10" : ""}>
+      <div className={wide ? "md:col-span-5" : ""}>
+        <h2 id={`${s.id}-title`} className="display d-1">
+          <T t={s.name} />
+        </h2>
+        <p className={`mt-3 text-[1.05rem] ${c.muted}`}>
+          <Other t={s.name} />
+        </p>
+        <p className="mt-7 max-w-[24ch] font-serif text-[1.6rem] leading-[1.2]">
+          <T t={s.description} />
+        </p>
+        {wide && <div className="hidden md:block">{book}</div>}
+      </div>
+      <div className={wide ? "md:col-span-6 md:col-start-7 md:self-end" : ""}>
+        <dl className={`mt-9 border-t ${c.rule}`}>
+          <div className={`grid grid-cols-[1fr_auto] items-end gap-x-4 border-b py-4 ${c.rule}`}>
+            <dt className="anno">
+              <T t={copy.styles.set} />
+            </dt>
+            <dd className="row-span-2 self-end">
+              <Price value={s.price} className="text-[3.6rem] leading-[0.85]" />
+            </dd>
+            <dd className={`mt-1.5 text-[0.95rem] ${c.muted}`}>
+              <T t={s.duration} />
+            </dd>
+          </div>
+          {rows.map((r) => (
+            <div key={r.k.en} className={`flex items-baseline justify-between gap-4 border-b py-3 ${c.rule}`}>
+              <dt className="text-[0.95rem]">
+                <T t={r.k} /> <span className={c.muted}>· <T t={r.dur} /></span>
+              </dt>
+              <dd>
+                <Price value={r.price} className="text-[1.6rem] leading-none" />
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <div className={wide ? "md:hidden" : ""}>{book}</div>
+      </div>
+    </div>
+  )
+}
+
+function MapCaption({ t: tn }: { t: Tone }) {
+  return (
+    <p className={`anno mt-4 md:pl-[11%] ${tone[tn].muted}`}>
+      <T t={copy.common.mmShort} />
+    </p>
+  )
+}
+
+function Section({ s, t, children }: { s: LashStyle; t: Tone; children: ReactNode }) {
+  const c = tone[t]
+  return (
+    <section id={s.id} aria-labelledby={`${s.id}-title`} className={`${c.bg} ${c.text} ${c.extra} scroll-mt-20 overflow-x-clip py-20 md:py-28`}>
+      {children}
+    </section>
+  )
+}
+
+const Caption = ({ t, className = "" }: { t: Bi; className?: string }) => (
+  <figcaption className={`anno mt-3 ${className}`}>
+    <T t={t} />
+  </figcaption>
+)
+
 export default function StylesPage() {
+  const natural = styleById("natural")
+  const full = styleById("full")
+  const anime = styleById("anime")
+  const hybrid = styleById("hybrid")
+  const volume = styleById("volume")
+
   return (
     <>
-      <section className="bg-m-paper pb-16 pt-10 md:pb-20 md:pt-16">
-        <div className="container-site grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-8">
+      {/* Index (paper): headline left, a ruled list of the five maps right */}
+      <section className="bg-m-paper pb-16 pt-10 md:pb-24 md:pt-16">
+        <div className="container-site grid gap-12 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-6">
             <p className="anno text-m-mute">
-              <T t={copy.nav.styles} /> · 5
+              <T t={copy.nav.styles} /> · <T t={copy.styles.indexLabel} />
             </p>
-            <h1 className="display d-1 mt-6 max-w-[14ch]">
+            <h1 className="display d-1 mt-6 max-w-[11ch]">
               <T t={copy.styles.title} />
             </h1>
-          </div>
-          <div className="md:col-span-4 md:self-end">
-            <p>
+            <p className="mt-8 max-w-[40ch] text-[1.15rem]">
               <T t={copy.styles.lead} />
             </p>
-            <p className="mt-3 text-m-mute">
+            <p className="mt-3 max-w-[40ch] text-m-mute">
               <T t={copy.common.illustrative} />
             </p>
           </div>
+          <nav aria-label={copy.styles.jump.en} className="md:col-span-6 md:col-start-7 md:pt-4">
+            <ul className="border-t border-m-ink">
+              {lashStyles.map((s) => (
+                <li key={s.id} className="border-b border-m-rule">
+                  <a
+                    href={`#${s.id}`}
+                    className="group grid min-h-[72px] grid-cols-[88px_1fr_auto] items-center gap-4 py-2 transition-colors duration-300 hover:bg-m-nude sm:grid-cols-[128px_1fr_auto] sm:gap-6 sm:pr-3"
+                  >
+                    <span className="text-m-ink">
+                      <LashMap lengths={s.lengths} density={s.id} size="xs" annotate={false} label={mapLabel(s)} />
+                    </span>
+                    <span>
+                      <span className="block font-serif text-[1.6rem] leading-none sm:text-[2rem]">
+                        <T t={s.name} />
+                      </span>
+                      <span className="mt-1 block text-[0.85rem] text-m-mute group-hover:text-m-ink">
+                        <T t={s.duration} />
+                      </span>
+                    </span>
+                    <Price value={s.price} className="text-[1.6rem] sm:text-[2rem]" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        <nav aria-label={copy.styles.jump.en} className="container-site mt-12">
-          <ul className="flex flex-wrap border-t border-m-rule">
-            {lashStyles.map((s) => (
-              <li key={s.id} className="w-1/2 border-b border-m-rule sm:w-1/3 md:w-1/5">
-                <a href={`#${s.id}`} className="flex min-h-[56px] items-baseline justify-between gap-3 py-3 pr-4 transition-colors hover:text-m-clay">
-                  <span className="font-serif text-[1.35rem]">
-                    <T t={s.short} />
-                  </span>
-                  <Price value={s.price} className="text-[1.1rem] text-m-mute" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </section>
 
-      {lashStyles.map((s, i) => {
-        const flip = i % 2 === 1
-        const ph = stylePhoto[s.id]
-        const bg = flip ? "bg-m-nude" : "bg-m-paper"
-        const muted = flip ? "text-m-ink" : "text-m-mute"
-        return (
-          <section key={s.id} id={s.id} aria-labelledby={`${s.id}-title`} className={`${bg} scroll-mt-20 border-t border-m-rule py-20 md:py-28`}>
-            <div className="container-site grid gap-12 md:grid-cols-12 md:gap-10">
-              {/* map + photo */}
-              <div className={`md:col-span-7 ${flip ? "md:order-2" : ""}`}>
-                <Reveal>
-                  <LashMap
-                    lengths={s.lengths}
-                    density={s.id}
-                    size="lg"
-                    label={`Lash map for the ${s.name.en}: ${mmRange(s.lengths)} millimetres, inner corner to outer corner`}
-                  />
-                  <p className={`anno mt-4 ${muted}`}>
-                    <T t={copy.common.mmNote} />
-                  </p>
-                </Reveal>
-                {ph ? (
-                  <Reveal index={1} className={`mt-12 flex ${flip ? "md:justify-start" : "md:justify-end"}`}>
-                    <Photo photo={ph.photo} alt={ph.alt} caption={ph.caption} maxWidth={340} sizes="(max-width: 768px) 80vw, 340px" captionClass={muted} />
-                  </Reveal>
-                ) : null}
+      {/* Natural (nude): map 7, spec 4, loupe breaking the map's corner */}
+      <Section s={natural} t="nude">
+        <div className="container-site grid gap-14 md:grid-cols-12 md:gap-10">
+          <Reveal className="relative md:col-span-7">
+            <ResponsiveMap lengths={natural.lengths} density="natural" label={mapLabel(natural)} corners={corners} />
+            <MapCaption t="nude" />
+            <figure className="zoom-hover ml-auto mt-10 w-[58%] max-w-[240px] md:absolute md:-bottom-28 md:right-[-2%] md:mt-0">
+              <div className="rounded-full border border-m-ink/40 p-2">
+                <Loupe photo={photos.naturalTrio} alt="Close-up of an eye with a soft, natural lash set" cx={215} cy={300} d={224} sizes="(max-width: 768px) 56vw, 224px" />
               </div>
+              <Caption t={copy.styles.captions.natural} />
+            </figure>
+          </Reveal>
+          <Reveal index={1} className="md:col-span-4 md:col-start-9">
+            <Spec s={natural} t="nude" />
+          </Reveal>
+        </div>
+      </Section>
 
-              {/* spec */}
-              <Reveal index={1} className={`md:col-span-4 ${flip ? "md:order-1 md:col-start-1" : "md:col-start-9"}`}>
-                <h2 id={`${s.id}-title`} className="display d-1">
-                  <T t={s.name} />
-                </h2>
-                <p className={`mt-3 text-[1.05rem] ${muted}`}>
-                  <Other t={s.name} />
-                </p>
-                <p className="mt-8 font-serif text-[1.6rem] leading-[1.25]">
-                  <T t={s.description} />
-                </p>
+      {/* Full (paper): flipped, loupe above-left of the map */}
+      <Section s={full} t="paper">
+        <div className="container-site grid gap-14 md:grid-cols-12 md:gap-10">
+          <Reveal className="md:order-2 md:col-span-7 md:col-start-6">
+            <figure className="zoom-hover mb-10 w-[58%] max-w-[260px] md:-ml-16 md:mb-4">
+              <div className="rounded-full border border-m-ink/40 p-2">
+                <Loupe photo={photos.closeupPair} alt="Close-up of an eye with a full, defined lash set" cx={250} cy={150} d={244} sizes="(max-width: 768px) 56vw, 244px" />
+              </div>
+              <Caption t={copy.styles.captions.full} className="text-m-mute" />
+            </figure>
+            <ResponsiveMap lengths={full.lengths} density="full" label={mapLabel(full)} corners={corners} />
+            <MapCaption t="paper" />
+          </Reveal>
+          <Reveal index={1} className="md:order-1 md:col-span-4 md:self-end">
+            <Spec s={full} t="paper" />
+          </Reveal>
+        </div>
+      </Section>
 
-                <dl className="mt-10 border-t border-m-ink/30">
-                  {[
-                    { k: copy.styles.set, price: s.price, dur: s.duration },
-                    { k: copy.styles.refill2, price: s.refill2.price, dur: s.refill2.duration },
-                    { k: copy.styles.refill3, price: s.refill3.price, dur: s.refill3.duration },
-                  ].map((row, ri) => (
-                    <div key={ri} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 border-b border-m-ink/20 py-4">
-                      <dt className="anno text-m-ink">
-                        <T t={row.k} />
-                      </dt>
-                      <dd className="row-span-2 text-right">
-                        <Price value={row.price} className={ri === 0 ? "text-[2.6rem] leading-none" : "text-[1.8rem] leading-none"} />
-                      </dd>
-                      <dd className={`text-[0.9rem] ${muted}`}>
-                        <T t={row.dur} />
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+      {/* Anime (ink): the one style with a real before/after, so it gets the widest stage */}
+      <Section s={anime} t="ink">
+        <div className="container-site">
+          <Reveal>
+            <ResponsiveMap lengths={anime.lengths} density="anime" desktop="xl" label={mapLabel(anime)} corners={corners} className="mx-auto md:max-w-[1000px]" />
+            <MapCaption t="ink" />
+          </Reveal>
+          <div className="mt-16 grid gap-14 md:grid-cols-12 md:gap-10">
+            <Reveal className="md:col-span-5">
+              <Spec s={anime} t="ink" />
+            </Reveal>
+            <Reveal index={1} className="md:col-span-6 md:col-start-7">
+              <figure>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="zoom-hover relative sm:mt-12">
+                    <span className="anno absolute left-0 top-0 z-10 bg-m-paper px-2.5 py-1.5 text-m-ink">
+                      <T t={copy.common.before} />
+                    </span>
+                    <Half photo={photos.animeBeforeAfter} alt="Before: an eye with its natural lashes" y0={0} y1={290} sizes="(max-width: 640px) 90vw, 300px" />
+                  </div>
+                  <div className="zoom-hover relative">
+                    <span className="anno absolute left-0 top-0 z-10 bg-m-paper px-2.5 py-1.5 text-m-ink">
+                      <T t={copy.common.after} />
+                    </span>
+                    <Half photo={photos.animeBeforeAfter} alt="After: the Anime Set, with spiky, separated lashes" y0={338} y1={640} sizes="(max-width: 640px) 90vw, 300px" />
+                  </div>
+                </div>
+                <Caption t={copy.styles.captions.anime} className="text-m-nude" />
+              </figure>
+            </Reveal>
+          </div>
+        </div>
+      </Section>
 
-                <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-line mt-10 text-m-ink hover:bg-m-ink hover:text-m-paper">
-                  <T t={copy.styles.bookThis} />
-                  <span className="sr-only">
-                    {" "}
-                    <T t={copy.common.opensNew} />
-                  </span>
-                </a>
-              </Reveal>
-            </div>
-          </section>
-        )
-      })}
+      {/* Hybrid (clay): map only, drawn wide, spec as a row underneath */}
+      <Section s={hybrid} t="clay">
+        <div className="container-site grid gap-12 md:grid-cols-12 md:gap-10">
+          <Reveal className="md:col-span-10 md:col-start-2">
+            <ResponsiveMap lengths={hybrid.lengths} density="hybrid" desktop="xl" label={mapLabel(hybrid)} corners={corners} />
+            <MapCaption t="clay" />
+          </Reveal>
+          <Reveal index={1} className="md:col-span-12">
+            <Spec s={hybrid} t="clay" wide />
+          </Reveal>
+        </div>
+      </Section>
 
-      <EndCta title={copy.menu.endTitle} link={{ href: "/menu", label: copy.styles.menuLink }} />
+      {/* Volume (paper): spec left, map right, map only */}
+      <Section s={volume} t="paper">
+        <div className="container-site grid gap-14 md:grid-cols-12 md:gap-10">
+          <Reveal className="md:order-2 md:col-span-7 md:col-start-6 md:self-center">
+            <ResponsiveMap lengths={volume.lengths} density="volume" label={mapLabel(volume)} corners={corners} />
+            <MapCaption t="paper" />
+          </Reveal>
+          <Reveal index={1} className="md:order-1 md:col-span-4">
+            <Spec s={volume} t="paper" />
+          </Reveal>
+        </div>
+      </Section>
+
+      <EndCta tone="nude" title={copy.menu.endTitle} link={{ href: "/menu", label: copy.styles.menuLink }} />
     </>
   )
 }
