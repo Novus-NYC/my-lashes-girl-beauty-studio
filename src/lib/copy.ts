@@ -50,8 +50,8 @@ export const copy = {
     // \u200b marks where the Chinese headline may wrap (the hero sets word-break: keep-all)
     title: b("Lashes designed for your eye shape.", "为你的眼型\u200b设计的睫毛。"),
     line: b(
-      "Custom lash sets by an artist with 8 years of experience, a short walk from Grand Central.",
-      "8 年经验的睫毛师为你定制，距离中央车站步行几分钟。",
+      "A soft, beautiful look that feels perfectly you, designed by an artist with 8 years of experience. A short walk from Grand Central.",
+      "柔和、美丽，完全是你自己的样子。由 8 年经验的睫毛师为你设计，距离中央车站步行几分钟。",
     ),
     seeStyles: b("See styles and prices", "查看款式和价格"),
     heroMapCaption: b("Anime set · illustrative map", "动漫款 · 设计示意图"),
@@ -65,27 +65,30 @@ export const copy = {
     readMap: b("Read the full map", "查看完整设计图"),
     processTitle: b("How a set is designed.", "一套睫毛的设计过程。"),
     processLead: b(
-      "Show her a picture of the lashes you like. The rest is planning.",
-      "带上你喜欢的睫毛照片，剩下的交给设计。",
+      "Every pair of eyes is unique, so each set is customized to match your natural shape.",
+      "每个人的眼睛都不一样，所以每一套睫毛都按你本来的眼型定制。",
     ),
     steps: [
       {
         word: b("Look", "观察"),
         body: b(
-          "We study your eye shape and the look you want. Bring a photo if you have one.",
-          "先看你的眼型和想要的效果。有参考照片的话可以带来。",
+          "It starts with your eyes and the look you love. Bring a photo if you have one.",
+          "从你的眼睛和你喜欢的效果开始。有参考照片的话可以带来。",
         ),
       },
       {
         word: b("Map", "设计"),
         body: b(
-          "Lengths and curl are planned zone by zone, from the inner corner out.",
-          "长度和弧度按区域规划，从内眼角一直到外眼角。",
+          "Lengths and curl are planned zone by zone, so the set follows your natural shape.",
+          "长度和弧度按区域规划，让睫毛顺着你本来的眼型。",
         ),
       },
       {
         word: b("Apply", "嫁接"),
-        body: b("Lashes are applied one zone at a time, following the map.", "按照设计图，一个区域一个区域地嫁接。"),
+        body: b(
+          "Lashes go on one zone at a time, following the map, for a soft, beautiful finish.",
+          "按照设计图一个区域一个区域地嫁接，效果柔和又好看。",
+        ),
       },
     ],
     baTitle: b("Before and after.", "嫁接前后。"),
@@ -105,8 +108,8 @@ export const copy = {
   styles: {
     title: b("Pick a style. Read its map.", "选一款，看它的设计图。"),
     lead: b(
-      "Each set has its own map: how long the lashes are in each zone, from the inner corner to the outer corner.",
-      "每一款都有自己的设计图：从内眼角到外眼角，每个区域的睫毛有多长。",
+      "Custom lash designs for your unique eye shape. Each set has its own map: how long the lashes are in each zone, from the inner corner to the outer corner.",
+      "为你独特的眼型，定制睫毛设计。每一款都有自己的设计图：从内眼角到外眼角，每个区域的睫毛有多长。",
     ),
     jump: b("Jump to a style", "跳转到款式"),
     set: b("Full set", "全套"),
@@ -117,10 +120,21 @@ export const copy = {
     captions: {
       natural: b("Natural set", "自然款"),
       full: b("Studio work · detail", "工作室作品 · 细节"),
+      hero: b("Studio work · a finished set", "工作室作品 · 完成效果"),
       anime: b("Anime set · before · after", "动漫款 · 嫁接前 · 嫁接后"),
     },
     menuLink: b("See the full menu with add-ons", "查看完整价目和加购项目"),
     indexLabel: b("Five sets", "五款"),
+    pairTitle: b("Hybrid or Volume?", "混合款\u200b还是\u200b浓密款？"),
+    pairLead: b(
+      "The same full set price. Compare the maps: Volume carries more lashes in every zone.",
+      "全套价格相同。对比一下设计图：浓密款每个区域的睫毛更多。",
+    ),
+    endTitle: b("Not sure which set?", "还没决定选哪款？"),
+    endLine: b(
+      "Bring a photo of lashes you love. Your set is planned for your eye shape at the appointment.",
+      "带上你喜欢的睫毛照片，预约时会按你的眼型来设计。",
+    ),
   },
   menu: {
     title: b("Menu", "价目表"),
@@ -138,6 +152,9 @@ export const copy = {
     refill3: b("3-week refill", "三周补睫"),
     stylesLink: b("See each style's lash map", "查看每款的设计图"),
     endTitle: b("Found your set?", "选好了吗？"),
+    bookOnline: b("Book online", "在线预约"),
+    orCall: b("Or call the studio", "或致电工作室"),
+    endLine: b("Book by appointment. Refills are on the same Square page.", "需提前预约。补睫也在同一个 Square 页面预约。"),
   },
   about: {
     title: b("8 years of lash artistry.", "8 年睫毛嫁接经验。"),
@@ -146,9 +163,15 @@ export const copy = {
       "My Lash Girl 是一家只接受预约的小型工作室，位于麦迪逊大道 274 号 12 楼，距离中央车站步行几分钟。",
     ),
     body: b(
-      "Every pair of eyes is unique, so every set is customized to match your natural shape. The goal is a soft, beautiful look that feels like you.",
-      "每个人的眼睛都不一样，所以每一套睫毛都按你本来的眼型定制，效果柔和好看，又像你自己。",
+      "Book by appointment, and bring a photo of lashes you love if you have one. Your set is planned around your eyes.",
+      "需提前预约。有喜欢的睫毛照片可以带来，睫毛会围绕你的眼睛来设计。",
     ),
+    philosophy: b("A soft, beautiful look that feels perfectly you.", "柔和、美丽，\u200b完全是你\u200b自己的样子。"),
+    philosophyLead: b(
+      "Every pair of eyes is unique, so each lash set is customized to match your natural shape.",
+      "每个人的眼睛都不一样，所以每一套睫毛都按你本来的眼型定制。",
+    ),
+    philosophySource: b("From the studio's ClassPass page", "摘自工作室 ClassPass 页面"),
     quote: b("Custom lash designs for your unique eye shape.", "为你独特的眼型，定制睫毛设计。"),
     quoteSource: b("From the studio's Instagram", "摘自工作室 Instagram"),
     specTitle: b("The studio, at a glance", "工作室一览"),
@@ -163,22 +186,23 @@ export const copy = {
     chairCaption: b("After a set, in the studio", "在工作室，嫁接完成后"),
     baCaption: b("Studio work · two angles", "工作室作品 · 两个角度"),
     tag: b("Woman-owned · Asian-owned", "女性创办 · 亚裔经营"),
-    endTitle: b("Come in for your own map.", "来设计属于你的睫毛。"),
+    endTitle: b("Come in for your own map.", "来设计\u200b属于你的睫毛。"),
+    endLine: b("Custom lash designs for your unique eye shape. Book by appointment.", "为你独特的眼型定制睫毛设计。需提前预约。"),
   },
   visit: {
     title: b("274 Madison Avenue", "274 Madison Avenue"),
     suite: b("Suite 1205 · 12th floor · New York, NY 10016", "1205 室 · 12 楼 · New York, NY 10016"),
     directionsTitle: b("From Grand Central", "从中央车站出发"),
-    directions: b(
-      "From Grand Central, walk to Madison Avenue and 40th Street. We're at 274 Madison, next to Chipotle. Take the elevator to the 12th floor, Suite 1205.",
-      "从中央车站步行到麦迪逊大道与 40 街交界。我们在 274 Madison，Chipotle 旁边。乘电梯到 12 楼 1205 室。",
-    ),
     hoursTitle: b("Hours", "营业时间"),
     appointmentOnly: b("Appointment only.", "仅限预约。"),
     arrive: b("Please arrive a few minutes early to settle in.", "请提前几分钟到达，稍作休息。"),
     mapTitle: b("Map showing 274 Madison Avenue, New York", "地图：纽约 274 Madison Avenue"),
     openMaps: b("Open in Google Maps", "在 Google 地图中打开"),
-    contactTitle: b("Book, call or message", "预约、致电或私信"),
+    contactTitle: b("Book, call or message", "预约、\u200b致电\u200b或私信"),
+    contactLine: b(
+      "Booking is on Square. Questions, or asking about the mobile lash service? Call, or message on Instagram.",
+      "通过 Square 预约。有问题或想了解上门睫毛服务，可以致电或在 Instagram 私信。",
+    ),
     route: [
       b("Grand Central", "中央车站"),
       b("Walk to Madison Avenue and 40th Street", "步行到麦迪逊大道与 40 街交界"),
@@ -200,6 +224,7 @@ export const copy = {
     elsewhere: b("Elsewhere", "其他平台"),
     studio: b("Studio", "工作室"),
     hours: b("Open 7 days, by appointment", "每周七天营业，需预约"),
+    hoursSentence: b("Open 7 days, by appointment.", "每周七天营业，需预约。"),
     seeHours: b("See hours", "查看营业时间"),
   },
 }

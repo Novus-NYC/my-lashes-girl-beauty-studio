@@ -88,7 +88,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               aria-current={isActive(l.href) ? "page" : undefined}
-              className="rule-hover flex min-h-[44px] items-center px-3 text-[0.95rem] text-m-ink [--rx:0.75rem] [--ry:0.6rem]"
+              className="rule-hover flex min-h-[44px] items-center px-3 text-[1rem] text-m-ink [--rx:0.75rem] [--ry:0.6rem]"
             >
               {t(l.label)}
             </Link>
@@ -108,7 +108,7 @@ export default function Navbar() {
             href={site.bookUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex min-h-[44px] items-center px-2 text-[0.95rem] font-semibold underline decoration-1 underline-offset-[6px] max-[359px]:hidden"
+            className="flex min-h-[44px] items-center px-2 text-[1rem] font-semibold underline decoration-1 underline-offset-[6px] max-[359px]:hidden"
           >
             {t(copy.nav.book)}
             <span className="sr-only"> {t(copy.common.opensNew)}</span>
@@ -163,7 +163,7 @@ export default function Navbar() {
                     <span className="display" style={{ ["--fs" as string]: "2.75rem" }}>
                       {t(l.label)}
                     </span>
-                    <span className="flex items-center gap-3 text-[0.9rem] text-m-mute">
+                    <span className="flex items-center gap-3 text-m-mute">
                       {isActive(l.href) && <span aria-hidden className="h-px w-8 self-center bg-m-ink" />}
                       <Other t={l.label} />
                     </span>

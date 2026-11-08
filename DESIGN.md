@@ -32,15 +32,18 @@ Logo-swap test: the per-style lash maps with millimetre annotations, the 12th-fl
 | Token | Hex | Role |
 |---|---|---|
 | `paper` | `#FAF6F1` | Canvas |
-| `nude` | `#E9D8CC` | Primary brand (the logo circle). Full-section backgrounds, map zones |
-| `ink` | `#1B1616` | Primary text, lash strokes, dark sections, primary button |
-| `clay` | `#9C5B4D` | Supplemental, now also a full-section colour (before/after, hybrid, end CTAs, visit contact, today panels). Paper on clay 4.86:1 passes AA for body text |
-| `mute` | `#6E625C` | Muted text on paper and nude |
+| `blush` | `#F3E3E0` | Soft band, a lighter, pinker tint of the logo circle |
+| `nude` | `#E9D8CC` | Primary brand (the logo circle). Full-section backgrounds, discs behind photos and maps |
+| `ink` | `#1B1616` | Primary text, lash strokes, primary button. Ink bands: home style explorer, styles Anime set, footer only |
+| `rose` | `#A34D5C` | Supplemental bold colour, at most one rose band per page (see §13). Replaces `clay` |
+| `mute` | `#5E524D` | Muted text on paper, blush and nude (passes AA on all three) |
 | `rule` | `rgba(27,22,22,.16)` | Hairlines |
 
-Section background sequence on the homepage: paper (hero) → ink (how a set is designed + style explorer) → clay (before and after) → nude (reviews) → paper (visit) → ink footer. No two neighbouring sections share a colour on any page. No gradients, no glass, no blobs, no rounded cards. Radius 0 except buttons (pills only for primary CTAs) and the circle motif (the logo's nude disc and the photo loupes).
+Section background sequence on the homepage: paper (hero) → ink (how a set is designed + style explorer) → blush (before and after) → rose (reviews) → paper (visit, nude today panel) → ink footer. No two neighbouring sections share a colour on any page. No gradients, no glass, no blobs, no rounded cards. Radius 0 except buttons (pills only for primary CTAs) and the circle motif (the logo's nude disc and the photo loupes).
 
-Measured contrast (WCAG): ink/paper 16.6, ink/nude 12.9, mute/paper 5.5, paper/clay 4.86, clay/paper 4.86, mute/nude 4.25 (fails), clay/nude 3.77 (fails), clay/ink 3.42 (fails). Rules that follow: on nude use ink only; on clay use paper only; on ink use paper or nude; clay text only on paper. Focus ring: clay on light surfaces, nude on ink (`.on-ink`), paper on clay (`.on-clay`).
+Measured contrast (WCAG): ink/paper 16.6, ink/blush 14.4, ink/nude 12.9, mute/paper 7.0, mute/blush 6.05, mute/nude 5.43, paper/rose 5.17, rose/paper 5.17, rose/blush 4.47 (fails body), rose/nude 4.02 (fails body), rose/ink 3.22 (fails). Rules that follow: on paper, blush and nude use ink or mute; rose text only on paper (or 24px+ display on blush); on rose use paper only; on ink use paper or nude. Focus ring: rose on light surfaces, nude on ink (`.on-ink`), paper on rose (`.on-rose`).
+
+Sections 5 to 9 describe the first build. Where they differ from §13 (palette roles, per-page compositions, `EndCta`), §13 wins.
 
 ## 5. Photography
 
@@ -168,3 +171,29 @@ No em dashes. No leading zeroes. Times like "10:00 AM". Never invent: artist nam
 - Layout: no max-width `main` wrapper; container `max-w-[1320px] px-5 md:px-10`.
 - Replace README with a business README including a "Confirm with owner" list.
 - Keep `AGENTS.md` and `CLAUDE.md` identical (do not edit them).
+
+## 13. Revision: "Soft precision" (Nov 7, 2026)
+
+A design review found the site cold and templated: the clay accent read brick and home-decor, the same reviews block and closing CTA repeated across pages, body copy was small and faint, several heroes were type plus empty space, and ink bands were used too often. The lash map stays; the voice and palette move toward the logo: a soft blush circle, a black lash, thin precise caps.
+
+**Palette and where each colour lives**
+- `paper` canvas on every page.
+- `blush` soft bands: home before and after, styles Natural, about closing, visit contact.
+- `nude` the logo disc behind hero photos and maps (home, styles, menu, about, 404), the menu full-set column, menu Face and body, about Work band, visit Hours and map, styles closing strip, home today panel.
+- `rose` one bold band per page at most: home reviews, styles Hybrid or Volume, menu Add-ons, about philosophy quote; on visit it is the today panel (no rose band). Also BEFORE / AFTER tags on home, today's row in the hours table, the last route stop, the active language, button hover.
+- `ink` bands only on the home style explorer, the styles Anime set and the footer. The menu card keeps its ink title strip.
+
+**Type**: `.anno` labels are 0.75rem (12px) minimum. Body copy is 1.0625rem everywhere (no 0.85 to 0.95rem text left); buttons and nav are 1rem. Muted text uses the darker `mute`.
+
+**Voice**: the client's own words lead. Instagram: "Custom lash designs for your unique eye shape." (styles lead, about Work band, about closing). ClassPass: "a soft, beautiful look that feels perfectly you" (home hero line, about pull quote) and "every pair of eyes is unique... customize each lash set to match your natural shape" (home process lead, about quote support). Quotes are exact substrings; paraphrases are not in quotation marks.
+
+**Pages**
+- Home: hero unchanged on desktop; on phones the address annotation replaces the duplicate header row and the ClassPass proof moves under the map so the map shows in the first screen. Before and after on blush; reviews (`Reviews.tsx`, home only) on rose; visit strip with a nude today panel lifted into the rose band.
+- Styles: hero now has a loupe of `eye-closeup-pair.jpg` on a nude disc above the jump list, plus Book and a menu link. Natural (blush, map + loupe), Full (paper, map only), Anime (ink, unchanged), then Hybrid and Volume share one rose band, "Hybrid or Volume?", maps side by side (both $160). Section padding 64 / 80px. Closes with a short nude strip ("Not sure which set?").
+- Menu: hero gains a loupe of the bottom eye of `natural-trio.jpg` on a nude disc and a styles link; the card starts inside the first screen. Add-ons on rose, Face and body on nude. Closes on paper with two large type links: Book on Square and the phone number.
+- About: hero shows `client-chair.jpg` as a 300px loupe cropped to the face (the shirt text is cut away) on a nude disc; the ownership tag sits below the circle's lower right, clear of the face. Rose band: the ClassPass line as the pull quote. Spec sheet on paper. Work band on nude with the Instagram line as its heading. No reviews. Closes centred on the eye mark on blush.
+- Visit: headline "274 Madison" over an italic "Avenue", flush left (the hanging indent is gone). The route from Grand Central is drawn in the hero, so the first screen holds address, today panel (rose) and the walk. Hours and map on nude; contact on blush as three large rows (Book, Call, Instagram). The chair loupe moved to About.
+- 404: tighter padding and a small loupe under the map.
+- `EndCta.tsx` is deleted: each page now ends differently (home visit strip, styles strip, menu type links, about centred mark, visit contact rows).
+- Chinese headings that would orphan one character use `\u200b` break hints with `word-break: keep-all`.
+

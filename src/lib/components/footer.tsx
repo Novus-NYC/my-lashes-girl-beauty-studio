@@ -55,7 +55,7 @@ export default function Footer() {
             </span>
           </address>
           <p className="mt-2 text-m-nude">
-            <T t={copy.footer.hours} />.{" "}
+            <T t={copy.footer.hoursSentence} />{" "}
             <Link href="/visit" className="link-under inline-flex min-h-[44px] items-center text-m-paper">
               <T t={copy.footer.seeHours} />
             </Link>
@@ -100,7 +100,7 @@ export default function Footer() {
       </div>
 
       <div className="container-site">
-        <div className="flex flex-col gap-1 border-t border-m-paper/20 py-5 text-[0.9rem] text-m-nude sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-1 border-t border-m-paper/20 py-5 text-m-nude sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {site.name}
           </p>

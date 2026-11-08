@@ -11,7 +11,7 @@
 }
 
 :root {
-  --ring: #9c5b4d;
+  --ring: #a34d5c;
   --nav-h: 72px;
 }
 
@@ -34,11 +34,11 @@ body {
   color: #1b1616;
 }
 
-/* Focus: clay on light surfaces, nude on ink, paper on clay */
+/* Focus: rose on light surfaces, nude on ink, paper on rose */
 .on-ink {
   --ring: #e9d8cc;
 }
-.on-clay {
+.on-rose {
   --ring: #faf6f1;
 }
 :focus-visible {
@@ -54,8 +54,8 @@ body {
   /* Technician's annotation lettering */
   .anno {
     font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 0.72rem;
-    line-height: 1.4;
+    font-size: 0.75rem;
+    line-height: 1.45;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-weight: 600;
@@ -100,14 +100,14 @@ body {
   }
 
   .btn-primary {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-m-ink px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-m-paper transition-colors duration-300 ease-calm hover:bg-m-clay;
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-m-ink px-7 text-[1rem] font-semibold tracking-[0.02em] text-m-paper transition-colors duration-300 ease-calm hover:bg-m-rose;
   }
   .btn-primary-light {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-m-paper px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-m-ink transition-colors duration-300 ease-calm hover:bg-m-nude;
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 rounded-full bg-m-paper px-7 text-[1rem] font-semibold tracking-[0.02em] text-m-ink transition-colors duration-300 ease-calm hover:bg-m-nude;
   }
   /* Square secondary button: hairline box */
   .btn-line {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-3 border border-current px-6 text-[0.95rem] font-semibold tracking-[0.02em] transition-colors duration-300 ease-calm;
+    @apply inline-flex min-h-[48px] items-center justify-center gap-3 border border-current px-6 text-[1rem] font-semibold tracking-[0.02em] transition-colors duration-300 ease-calm;
   }
   .link-under {
     @apply underline decoration-1 underline-offset-[6px] transition-[text-decoration-color] duration-300;

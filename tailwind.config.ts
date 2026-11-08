@@ -9,10 +9,11 @@ const config: Config = {
       colors: {
         m: {
           paper: "#FAF6F1",
+          blush: "#F3E3E0",
           nude: "#E9D8CC",
           ink: "#1B1616",
-          clay: "#9C5B4D",
-          mute: "#6E625C",
+          rose: "#A34D5C",
+          mute: "#5E524D",
           rule: "rgba(27,22,22,.16)",
         },
       },

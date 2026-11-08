@@ -16,7 +16,7 @@ function useNYDay(): Day | null {
   return day
 }
 
-/** Full week table. Today's row is set in clay with paper text, bold, and labelled "Today". */
+/** Full week table. Today's row is set in rose with paper text, bold, and labelled "Today". */
 export function HoursTable() {
   const { lang, t } = useLang()
   const today = useNYDay()
@@ -29,7 +29,7 @@ export function HoursTable() {
           return (
             <tr
               key={row.day}
-              className={`border-t border-m-rule last:border-b ${isToday ? "on-clay bg-m-clay text-m-paper" : ""}`}
+              className={`border-t border-m-rule last:border-b ${isToday ? "on-rose bg-m-rose text-m-paper" : ""}`}
               aria-current={isToday ? "date" : undefined}
             >
               <th scope="row" className={`py-3.5 pl-3 pr-4 align-top ${isToday ? "font-semibold" : "font-normal"}`}>
@@ -61,7 +61,7 @@ export function TodayLine({ tone = "paper" }: { tone?: "paper" | "ink" }) {
   const row = hours.find((h) => h.day === today)
   return (
     <p className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-      <span className={`anno ${tone === "ink" ? "text-m-nude" : "text-m-clay"}`}>{t(copy.common.today)}</span>
+      <span className={`anno ${tone === "ink" ? "text-m-nude" : "text-m-rose"}`}>{t(copy.common.today)}</span>
       <span className="tnum text-[1.15rem]">
         {row ? (
           <>
@@ -75,18 +75,19 @@ export function TodayLine({ tone = "paper" }: { tone?: "paper" | "ink" }) {
   )
 }
 
-/** Large "today" readout for highlight panels (ink or clay surfaces). */
-export function TodayBlock() {
+/** Large "today" readout for highlight panels. tone "paper" for rose surfaces, "ink" for light ones. */
+export function TodayBlock({ tone = "paper" }: { tone?: "paper" | "ink" }) {
+  const c = tone === "ink" ? "text-m-ink" : "text-m-paper"
   const { lang, t } = useLang()
   const today = useNYDay()
   const row = hours.find((h) => h.day === today)
   return (
     <div>
-      <p className="anno text-m-paper">
+      <p className={`anno ${c}`}>
         {t(copy.common.today)}
         {row ? <> · {row[lang]}</> : null}
       </p>
-      <p className="tnum mt-3 font-serif text-[2rem] leading-[1.1] text-m-paper md:text-[2.5rem]">
+      <p className={`tnum mt-3 font-serif text-[2rem] leading-[1.1] md:text-[2.5rem] ${c}`}>
         {row ? (
           row.ranges.map(([a, b], i) => (
             <span key={a} className="block">

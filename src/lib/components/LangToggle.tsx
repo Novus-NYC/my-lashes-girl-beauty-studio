@@ -20,8 +20,8 @@ export default function LangToggle({ className = "" }: { className?: string }) {
             lang={o.lang}
             aria-pressed={lang === o.id}
             onClick={() => setLang(o.id)}
-            className={`min-h-[44px] min-w-[44px] px-2 text-[0.8rem] font-semibold tracking-[0.12em] transition-colors duration-300 ${
-              lang === o.id ? "text-m-clay underline decoration-1 underline-offset-[6px]" : "text-m-mute hover:text-m-ink"
+            className={`min-h-[44px] min-w-[44px] px-2 text-[0.875rem] font-semibold tracking-[0.12em] transition-colors duration-300 ${
+              lang === o.id ? "text-m-rose underline decoration-1 underline-offset-[6px]" : "text-m-mute hover:text-m-ink"
             }`}
           >
             {o.label}

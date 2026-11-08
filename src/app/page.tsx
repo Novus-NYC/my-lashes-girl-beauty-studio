@@ -19,7 +19,7 @@ const NewTab = () => (
 
 /** Small paper tag set inside a photo corner: BEFORE / AFTER */
 const Tag = ({ t }: { t: { en: string; zh: string } }) => (
-  <span className="anno absolute left-0 top-0 z-10 bg-m-clay px-2.5 py-1.5 text-m-paper">
+  <span className="anno absolute left-0 top-0 z-10 bg-m-rose px-2.5 py-1.5 text-m-paper">
     <T t={t} />
   </span>
 )
@@ -34,26 +34,23 @@ export default function HomePage() {
       <section className="relative overflow-x-clip bg-m-paper">
         <div className="container-site">
           <div className="anno flex items-center justify-between gap-6 border-b border-m-rule py-3.5 text-m-mute">
-            <span>
+            <span className="hidden sm:inline">
               <T t={copy.home.sheet} /> · <Other t={copy.home.sheet} />
             </span>
-            <span className="hidden text-right sm:inline">
+            <span className="sm:text-right">
               <T t={copy.home.annotation} />
             </span>
           </div>
 
           <div className="grid pb-16 pt-8 md:grid-cols-12 md:gap-x-10 md:pb-20 md:pt-10">
             <div className="relative z-10 flex flex-col md:col-span-7">
-              <p className="anno text-m-mute sm:hidden">
-                <T t={copy.home.annotation} />
-              </p>
-              <h1 className="display d-hero mt-5 max-w-[9.5ch] [word-break:keep-all] sm:mt-0">
+              <h1 className="display d-hero max-w-[9.5ch] [word-break:keep-all]">
                 <T t={copy.home.title} />
               </h1>
-              <p className="mt-8 max-w-[34ch] text-[1.2rem] leading-[1.55]">
+              <p className="mt-6 max-w-[34ch] text-[1.15rem] leading-[1.55] md:mt-8 md:text-[1.2rem]">
                 <T t={copy.home.line} />
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-2 md:mt-9">
                 <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-primary">
                   <T t={copy.common.bookOnSquare} />
                   <NewTab />
@@ -66,7 +63,7 @@ export default function HomePage() {
                 href={site.classpass}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-9 inline-flex min-h-[44px] w-fit items-baseline gap-3 border-t border-m-rule pt-4 text-m-mute transition-colors hover:text-m-ink"
+                className="mt-9 hidden md:inline-flex min-h-[44px] w-fit items-baseline gap-3 border-t border-m-rule pt-4 text-m-mute transition-colors hover:text-m-ink"
               >
                 <span className="latin font-serif text-[2rem] leading-none text-m-ink">{site.rating.score}</span>
                 <span className="anno">
@@ -77,7 +74,7 @@ export default function HomePage() {
             </div>
 
             {/* The sheet */}
-            <div className="relative mt-12 h-[112vw] max-h-[520px] md:col-span-5 md:col-start-8 md:mt-0 md:h-[660px] md:max-h-none">
+            <div className="relative mt-8 h-[112vw] max-h-[520px] md:col-span-5 md:col-start-8 md:mt-0 md:h-[660px] md:max-h-none">
               <div aria-hidden className="absolute left-[8vw] top-0 aspect-square w-[108vw] rounded-full bg-m-nude md:-left-12 md:w-[720px]" />
               {/* mobile map */}
               <div className="absolute inset-x-0 top-[16vw] text-m-ink md:hidden">
@@ -109,12 +106,26 @@ export default function HomePage() {
                 </figcaption>
               </figure>
             </div>
+
+            {/* Phones: the ClassPass proof sits under the sheet so the map shows in the first screen */}
+            <a
+              href={site.classpass}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex min-h-[44px] w-fit items-baseline gap-3 border-t border-m-rule pt-4 text-m-mute md:hidden"
+            >
+              <span className="latin font-serif text-[2rem] leading-none text-m-ink">{site.rating.score}</span>
+              <span className="anno">
+                <T t={copy.reviews.count} />
+              </span>
+              <NewTab />
+            </a>
           </div>
         </div>
       </section>
 
       {/* 2. How a set is designed (ink): Look, Map, Apply, then the style explorer */}
-      <section className="on-ink bg-m-ink py-20 text-m-paper md:py-28" aria-labelledby="process-title">
+      <section className="on-ink bg-m-ink py-16 text-m-paper md:py-24" aria-labelledby="process-title">
         <div className="container-site">
           <div className="grid gap-10 md:grid-cols-12 md:items-end">
             <Reveal className="md:col-span-5">
@@ -131,7 +142,7 @@ export default function HomePage() {
                   <h3 className={`font-serif text-[2.2rem] leading-none ${i === 1 ? "italic" : ""}`}>
                     <T t={s.word} />
                   </h3>
-                  <p className="mt-3 text-[0.95rem] text-m-nude">
+                  <p className="mt-3 text-m-nude">
                     <T t={s.body} />
                   </p>
                 </Reveal>
@@ -139,14 +150,14 @@ export default function HomePage() {
             </ol>
           </div>
 
-          <div className="mt-16 md:mt-24">
+          <div className="mt-14 md:mt-20">
             <StyleExplorer initial="anime" />
           </div>
         </div>
       </section>
 
-      {/* 3. Before and after (clay): one pair, split and overlapped */}
-      <section className="on-clay bg-m-clay py-20 text-m-paper md:py-28" aria-labelledby="ba-title">
+      {/* 3. Before and after (blush): one pair, split and overlapped */}
+      <section className="bg-m-blush py-16 text-m-ink md:py-24" aria-labelledby="ba-title">
         <div className="container-site grid gap-14 md:grid-cols-12 md:gap-10">
           <Reveal className="md:col-span-4 md:self-center">
             <h2 id="ba-title" className="display d-1">
@@ -174,7 +185,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal
               index={1}
-              className="zoom-hover relative -mt-14 w-[64%] max-w-[300px] outline outline-[10px] outline-m-clay md:absolute md:bottom-[-56px] md:left-[4%] md:mt-0 md:w-[300px]"
+              className="zoom-hover relative -mt-14 w-[64%] max-w-[300px] outline outline-[10px] outline-m-blush md:absolute md:bottom-[-56px] md:left-[4%] md:mt-0 md:w-[300px]"
             >
               <Tag t={copy.common.before} />
               <Half photo={photos.beforeAfter1} alt="Before: the eye with its natural lashes, before extensions" y0={0} y1={300} sizes="(max-width: 768px) 64vw, 300px" />
@@ -186,10 +197,10 @@ export default function HomePage() {
       {/* 4. Reviews (nude) */}
       <Reviews />
 
-      {/* 5. Visit strip (paper) with an ink "today" panel lifted into the reviews */}
-      <section className="bg-m-paper pb-20 pt-16 md:pb-28 md:pt-0" aria-labelledby="visit-title">
+      {/* 5. Visit strip (paper) with a nude "today" panel lifted into the rose reviews band */}
+      <section className="bg-m-paper pb-16 pt-14 md:pb-24 md:pt-0" aria-labelledby="visit-title">
         <div className="container-site grid gap-12 md:grid-cols-12 md:gap-10">
-          <Reveal className="md:col-span-7 md:pt-24">
+          <Reveal className="md:col-span-7 md:pt-20">
             <h2 id="visit-title" className="display d-1 max-w-[10ch]">
               <T t={copy.home.visitTitle} />
             </h2>
@@ -206,18 +217,18 @@ export default function HomePage() {
               <T t={copy.home.visitLink} />
             </Link>
           </Reveal>
-          <Reveal index={1} className="on-ink relative z-10 flex flex-col gap-6 bg-m-ink p-7 text-m-paper md:col-span-5 md:-mt-24 md:self-start md:p-10">
-            <TodayBlock />
-            <p className="text-m-nude">
-              <span className="anno block text-m-paper">
+          <Reveal index={1} className="relative z-10 flex flex-col gap-6 bg-m-nude p-7 text-m-ink md:col-span-5 md:-mt-24 md:self-start md:p-10">
+            <TodayBlock tone="ink" />
+            <p>
+              <span className="anno block">
                 <T t={copy.common.byAppointment} />
               </span>
               <span className="mt-2 block">
                 <T t={copy.common.mobile} />
               </span>
             </p>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-m-paper/25 pt-6">
-              <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-primary-light">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
+              <a href={site.bookUrl} target="_blank" rel="noreferrer" className="btn-primary">
                 <T t={copy.common.bookOnSquare} />
                 <NewTab />
               </a>

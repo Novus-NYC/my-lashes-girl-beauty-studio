@@ -74,12 +74,12 @@ export default function StyleExplorer({ initial = "anime" }: { initial?: StyleId
                 }`}
               >
                 <span className="font-serif text-[1.05rem] leading-none sm:text-[1.3rem] md:text-[1.75rem]">{t(o.short)}</span>
-                <Price value={o.price} className={`text-[0.95rem] leading-none md:text-[1.2rem] ${on ? "text-m-ink" : "text-m-nude"}`} />
+                <Price value={o.price} className={`text-[1.05rem] leading-none md:text-[1.2rem] ${on ? "text-m-ink" : "text-m-nude"}`} />
               </button>
             )
           })}
         </div>
-        <p className="mt-6 hidden max-w-[28ch] text-[0.95rem] text-m-nude md:block">{t(copy.home.explorerLead)}</p>
+        <p className="mt-6 hidden max-w-[28ch] text-m-nude md:block">{t(copy.home.explorerLead)}</p>
       </div>
 
       {/* Map + readout */}
@@ -134,7 +134,7 @@ export default function StyleExplorer({ initial = "anime" }: { initial?: StyleId
             </div>
             {rows.map((r) => (
               <div key={r.k.en} className="flex items-baseline justify-between gap-4 border-b border-m-paper/25 py-3">
-                <dt className="text-[0.95rem] text-m-nude">
+                <dt className="text-m-nude">
                   {t(r.k)} <span className="text-m-paper/80">· {t(r.dur)}</span>
                 </dt>
                 <dd>
@@ -144,7 +144,7 @@ export default function StyleExplorer({ initial = "anime" }: { initial?: StyleId
             ))}
           </dl>
         </div>
-        <p className="mt-6 text-[0.9rem] text-m-nude">{t(copy.common.illustrative)}</p>
+        <p className="mt-6 text-m-nude">{t(copy.common.illustrative)}</p>
       </div>
     </div>
   )
